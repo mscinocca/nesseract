@@ -1,6 +1,6 @@
 ﻿namespace NESseract.Core.Cpu
 {
-   public enum OpCodes
+   public enum OpCode
    {
       ADC = 1,
       AND = 2,

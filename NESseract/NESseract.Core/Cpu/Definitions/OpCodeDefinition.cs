@@ -4,9 +4,9 @@
    {
       public byte OpCode;
 
-      public OpCodes Nemonic;
+      public OpCode Nemonic;
 
-      public AddressingModes AddressingMode;
+      public AddressingMode AddressingMode;
 
       public byte InstructionBytes;
 
@@ -16,8 +16,8 @@
 
       public OpCodeDefinition(
          byte opCode,
-         OpCodes nemonic,
-         AddressingModes addressingMode,
+         OpCode nemonic,
+         AddressingMode addressingMode,
          byte instructionBytes,
          byte executionCycles,
          string affectedFlags)

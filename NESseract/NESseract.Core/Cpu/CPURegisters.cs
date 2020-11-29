@@ -12,10 +12,10 @@
 
       public ushort ProgramCounter;
 
-      public bool CarryFlag
+      public int CarryFlag
       {
-         get { return (ProcessorStatus >> 0 & 1) == 1; }
-         set { ProcessorStatus |= (byte)((value ? 1 : 0) << 0); }
+         get { return ProcessorStatus >> 0 & 1; }
+         set { ProcessorStatus |= (byte)(value << 0); }
       }
 
       public bool ZeroFlag
