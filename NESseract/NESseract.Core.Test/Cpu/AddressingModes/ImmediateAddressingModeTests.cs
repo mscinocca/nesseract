@@ -4,13 +4,19 @@ using NESseract.Core.Cpu.AddressingModes;
 namespace NESseract.Core.Test.Cpu.AddressingModes
 {
    [TestClass]
-   public class ImmediateAddressingModeTests
+   public class ImmediateAddressingModeTests : BaseAddressingModeTests<ImmediateAddressingMode>
    {
+      [TestMethod]
+      public void GetValueTest()
+      {
+         var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x32, 0x40);
+
+         Assert.AreEqual(0x32, value);
+      }
+
       [TestMethod]
       public void GetSyntaxTest()
       {
-         var addressingMode = new ImmediateAddressingMode();
-
          var syntax = addressingMode.GetSyntax(0x32, 0x40);
 
          Assert.AreEqual("#$32", syntax);

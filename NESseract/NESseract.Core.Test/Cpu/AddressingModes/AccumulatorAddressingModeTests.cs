@@ -4,13 +4,21 @@ using NESseract.Core.Cpu.AddressingModes;
 namespace NESseract.Core.Test.Cpu.AddressingModes
 {
    [TestClass]
-   public class AccumulatorAddressingModeTests
+   public class AccumulatorAddressingModeTests : BaseAddressingModeTests<AccumulatorAddressingMode>
    {
+      [TestMethod]
+      public void GetValueTest()
+      {
+         cpuRegisters.A = 0x35;
+
+         var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x32, 0x40);
+
+         Assert.AreEqual(0x35, value);
+      }
+
       [TestMethod]
       public void GetSyntaxTest()
       {
-         var addressingMode = new AccumulatorAddressingMode();
-
          var syntax = addressingMode.GetSyntax(0x32, 0x40);
 
          Assert.AreEqual("A", syntax);

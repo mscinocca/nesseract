@@ -2,11 +2,9 @@
 {
    public class RelativeAddressingMode : IAddressingMode
    {
-      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+      public ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var address = memory.Memory[operand1] | memory.Memory[operand1 + 1] << 0x08 + registers.IndexRegisterY;
-
-         return memory.Memory[address];
+         return (ushort)(registers.PC + (sbyte)operand1);
       }
 
       public string GetSyntax(byte operand1, byte operand2)

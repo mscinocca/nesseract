@@ -33,16 +33,16 @@ namespace NESseract.Core.Cpu
 
       public void SetProgramCounter(ushort programCounter)
       {
-         Registers.ProgramCounter = programCounter;
+         Registers.PC = programCounter;
       }
 
       public void Tick()
       {
-         CurrentOpCode = Memory.Memory[Registers.ProgramCounter];
+         CurrentOpCode = Memory.Memory[Registers.PC];
 
-         var operand1 = Memory.Memory[Registers.ProgramCounter + 1];
+         var operand1 = Memory.Memory[Registers.PC + 1];
 
-         var operand2 = Memory.Memory[Registers.ProgramCounter + 2];
+         var operand2 = Memory.Memory[Registers.PC + 2];
 
          ProcessOpCode(CurrentOpCode, operand1, operand2);
       }
@@ -51,7 +51,7 @@ namespace NESseract.Core.Cpu
       {
          var opCodeHandler = opCodeTable[opCode];
 
-         Console.WriteLine($"{Registers.ProgramCounter} {opCode:X} {operand1:X} {operand2:X} {opCodeHandler.Nemonic}");
+         Console.WriteLine($"{Registers.PC} {opCode:X} {operand1:X} {operand2:X} {opCodeHandler.Nemonic}");
       }
    }
 }

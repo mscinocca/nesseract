@@ -2,9 +2,9 @@
 {
    public class AccumulatorAddressingMode : IAddressingMode
    {
-      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+      public ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return registers.Accumulator;
+         return registers.A;
       }
 
       public string GetSyntax(byte operand1, byte operand2)
