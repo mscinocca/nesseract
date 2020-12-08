@@ -27,19 +27,54 @@ namespace NESseract.Core.Cpu
          OpCodeHandlers = new Dictionary<byte, OpCodeHandler>();
 
          InitializeOpCodeHandlers();
+
+         PowerUp();
       }
 
+      public void PowerUp()
+      {
+         Registers.PS = 0x20;
+         Registers.I_InterruptDisable = 1;
+
+         Registers.A = 0x00;
+         Registers.X = 0x00;
+         Registers.Y = 0x00;
+
+         Registers.SP = 0xFD;
+
+         Memory.Memory[0x4017] = 0x00;
+         Memory.Memory[0x4015] = 0x00;
+
+         for (var i = 0x4000; i <= 0x400F; i++)
+         {
+            Memory.Memory[i] = 0x00;
+         }
+
+         for (var i = 0x4010; i <= 0x4013; i++)
+         {
+            Memory.Memory[i] = 0x00;
+         }
+
+         Counter = 7;
+      }
+
+      public void Reset()
+      {
+         Registers.SP -= 0x03;
+
+         Registers.I_InterruptDisable = 1;
+
+         Memory.Memory[0x4015] = 0x00;
+      }
+      
       public void LoadROM(byte[] rom)
       {
          Rom = rom;
 
          Array.Copy(Rom, 16, Memory.Memory, 0x8000, 0x4000);
          Array.Copy(Rom, 16, Memory.Memory, 0xC000, 0x4000);
-      }
 
-      public void SetProgramCounter(ushort programCounter)
-      {
-         Registers.PC = programCounter;
+         Registers.PC = 0xC000;
       }
 
       public void Tick()
@@ -60,6 +95,10 @@ namespace NESseract.Core.Cpu
          var log = opCodeHandler.GetLog(Memory, Registers, Counter, operand1, operand2);
 
          Debug.WriteLine(log);
+
+         var cycles = opCodeHandler.Execute(Memory, Registers, operand1, operand2);
+
+         Counter += cycles;
       }
    }
 }

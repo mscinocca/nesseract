@@ -12,9 +12,11 @@ namespace NESseract.Core.Cpu
 
       public IAddressingMode AddressingMode { get; set; }
 
-      public void Execute(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+      public byte Execute(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          Operation.Execute(AddressingMode, memory, registers, operand1, operand2);
+
+         return OpCodeDefinition.ExecutionCycles;
       }
 
       public string GetLog(CPUMemory memory, CPURegisters registers, ushort counter, byte operand1, byte operand2)

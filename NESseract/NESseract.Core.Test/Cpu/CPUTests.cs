@@ -33,7 +33,6 @@ namespace NESseract.Core.Test.Cpu
 
          var cpu = new Core.Cpu.CPU();
          cpu.LoadROM(rom);
-         cpu.SetProgramCounter(0xC000);
          cpu.Tick();
 
          Assert.AreEqual(@"NES", identifier);

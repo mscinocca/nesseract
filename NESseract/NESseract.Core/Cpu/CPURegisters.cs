@@ -56,15 +56,14 @@
 
       public CPURegisters()
       {
-         PC = 0;
-         SP = 0xFD;
+         PC = 0x00;
+         SP = 0x00;
 
-         A = 0;
-         X = 0;
-         Y = 0;
+         A = 0x00;
+         X = 0x00;
+         Y = 0x00;
 
-         PS = 0x20;
-         I_InterruptDisable = 1;
+         PS = 0x00;
       }
    }
 }
