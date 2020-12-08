@@ -1,237 +1,135 @@
-﻿using NESseract.Core.Cpu.Definitions;
-using System.Collections.Generic;
+﻿using NESseract.Core.Cpu.AddressingModes;
+using NESseract.Core.Cpu.Definitions;
+using NESseract.Core.Cpu.Operations;
+using System;
 
 namespace NESseract.Core.Cpu
 {
    public partial class CPU
    {
-      public List<OpCodeDefinition> OpCodeDefinitions;
+      private IOperation adcOperation;
+      private IOperation andOperation;
 
-      private Dictionary<byte, OpCodeDefinition> opCodeTable;
+      private IAddressingMode noneAddressingMode;
+      private IAddressingMode absoluteAddressingMode;
+      private IAddressingMode absoluteXAddressingMode;
+      private IAddressingMode absoluteYAddressingMode;
+      private IAddressingMode accumulatorAddressingMode;
+      private IAddressingMode immediateAddressingMode;
+      private IAddressingMode impliedAddressingMode;
+      private IAddressingMode indirectAddressingMode;
+      private IAddressingMode indirectXAddressingMode;
+      private IAddressingMode indirectYAddressingMode;
+      private IAddressingMode relativeAddressingMode;
+      private IAddressingMode zeroPageAddressingMode;
+      private IAddressingMode zeroPageXAddressingMode;
+      private IAddressingMode zeroPageYAddressingMode;
 
-      private void InitializeOpCodeDefinitions()
+      private void InitializeOpCodeHandlers()
       {
-         OpCodeDefinitions = new List<OpCodeDefinition>
+         adcOperation = new ADCOperation();
+         andOperation = new ANDOperation();
+
+         noneAddressingMode = new NoneAddressingMode();
+         absoluteAddressingMode = new AbsoluteAddressingMode();
+         absoluteXAddressingMode = new AbsoluteXAddressingMode();
+         absoluteYAddressingMode = new AbsoluteYAddressingMode();
+         accumulatorAddressingMode = new AccumulatorAddressingMode();
+         immediateAddressingMode = new ImmediateAddressingMode();
+         impliedAddressingMode = new ImpliedAddressingMode();
+         indirectAddressingMode = new IndirectAddressingMode();
+         indirectXAddressingMode = new IndirectXAddressingMode();
+         indirectYAddressingMode = new IndirectYAddressingMode();
+         relativeAddressingMode = new RelativeAddressingMode();
+         zeroPageAddressingMode = new ZeroPageAddressingMode();
+         zeroPageXAddressingMode = new ZeroPageXAddressingMode();
+         zeroPageYAddressingMode = new ZeroPageYAddressingMode();
+
+         OpCodeDefinitions.OpCodeList.ForEach(x =>
          {
-            // ADC
-            new OpCodeDefinition(0x69, OpCode.ADC, AddressingMode.IMM, 2, 2, "NVZC"),
-            new OpCodeDefinition(0x65, OpCode.ADC, AddressingMode.ZP0, 2, 3, "NVZC"),
-            new OpCodeDefinition(0x75, OpCode.ADC, AddressingMode.ZPX, 2, 4, "NVZC"),
-            new OpCodeDefinition(0x6D, OpCode.ADC, AddressingMode.ABS, 3, 4, "NVZC"),
-            new OpCodeDefinition(0x7D, OpCode.ADC, AddressingMode.ABX, 3, 4, "NVZC"),
-            new OpCodeDefinition(0x79, OpCode.ADC, AddressingMode.ABY, 3, 4, "NVZC"),
-            new OpCodeDefinition(0x61, OpCode.ADC, AddressingMode.IDX, 2, 6, "NVZC"),
-            new OpCodeDefinition(0x71, OpCode.ADC, AddressingMode.IDY, 2, 5, "NVZC"),
-
-            // AND
-            new OpCodeDefinition(0x29, OpCode.AND, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0x25, OpCode.AND, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0x35, OpCode.AND, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0x2D, OpCode.AND, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0x3D, OpCode.AND, AddressingMode.ABX, 3, 4, "NZ"),
-            new OpCodeDefinition(0x39, OpCode.AND, AddressingMode.ABY, 3, 4, "NZ"),
-            new OpCodeDefinition(0x21, OpCode.AND, AddressingMode.IDX, 2, 6, "NZ"),
-            new OpCodeDefinition(0x31, OpCode.AND, AddressingMode.IDY, 2, 5, "NZ"),
-
-            // ASL
-            new OpCodeDefinition(0x0A, OpCode.ASL, AddressingMode.ACC, 1, 2, "NZC"),
-            new OpCodeDefinition(0x06, OpCode.ASL, AddressingMode.ZP0, 2, 5, "NZC"),
-            new OpCodeDefinition(0x16, OpCode.ASL, AddressingMode.ZPX, 2, 6, "NZC"),
-            new OpCodeDefinition(0x0E, OpCode.ASL, AddressingMode.ABS, 3, 6, "NZC"),
-            new OpCodeDefinition(0x1E, OpCode.ASL, AddressingMode.ABX, 3, 7, "NZC"),
-
-            // BIT
-            new OpCodeDefinition(0x24, OpCode.BIT, AddressingMode.ZP0, 2, 3, "NVZ"),
-            new OpCodeDefinition(0x2C, OpCode.BIT, AddressingMode.ABS, 3, 4, "NVZ"),
-
-            // Branch Instructions
-            new OpCodeDefinition(0x10, OpCode.BPL, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0x30, OpCode.BMI, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0x50, OpCode.BVC, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0x70, OpCode.BVS, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0x90, OpCode.BCC, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0xB0, OpCode.BCS, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0xD0, OpCode.BNE, AddressingMode.NON, 2, 2, ""),
-            new OpCodeDefinition(0xF0, OpCode.BEQ, AddressingMode.NON, 2, 2, ""),
-
-            // BRK
-            new OpCodeDefinition(0x00, OpCode.BRK, AddressingMode.IMP, 1, 7, "B"),
-
-            // CMP
-            new OpCodeDefinition(0xC9, OpCode.CMP, AddressingMode.IMM, 2, 2, "NZC"),
-            new OpCodeDefinition(0xC5, OpCode.CMP, AddressingMode.ZP0, 2, 3, "NZC"),
-            new OpCodeDefinition(0xD5, OpCode.CMP, AddressingMode.ZPX, 2, 4, "NZC"),
-            new OpCodeDefinition(0xCD, OpCode.CMP, AddressingMode.ABS, 3, 4, "NZC"),
-            new OpCodeDefinition(0xDD, OpCode.CMP, AddressingMode.ABX, 3, 4, "NZC"),
-            new OpCodeDefinition(0xD9, OpCode.CMP, AddressingMode.ABY, 3, 4, "NZC"),
-            new OpCodeDefinition(0xC1, OpCode.CMP, AddressingMode.IDX, 2, 6, "NZC"),
-            new OpCodeDefinition(0xD1, OpCode.CMP, AddressingMode.IDY, 2, 5, "NZC"),
-
-            // CPX
-            new OpCodeDefinition(0xE0, OpCode.CPX, AddressingMode.IMM, 2, 2, "NZC"),
-            new OpCodeDefinition(0xE4, OpCode.CPX, AddressingMode.ZP0, 2, 3, "NZC"),
-            new OpCodeDefinition(0xEC, OpCode.CPX, AddressingMode.ABS, 3, 4, "NZC"),
-
-            // CPY
-            new OpCodeDefinition(0xC0, OpCode.CPY, AddressingMode.IMM, 2, 2, "NZC"),
-            new OpCodeDefinition(0xC4, OpCode.CPY, AddressingMode.ZP0, 2, 3, "NZC"),
-            new OpCodeDefinition(0xCC, OpCode.CPY, AddressingMode.ABS, 3, 4, "NZC"),
-
-            // DEC
-            new OpCodeDefinition(0xC6, OpCode.DEC, AddressingMode.ZP0, 2, 5, "NZ"),
-            new OpCodeDefinition(0xD6, OpCode.DEC, AddressingMode.ZPX, 2, 6, "NZ"),
-            new OpCodeDefinition(0xCE, OpCode.DEC, AddressingMode.ABS, 3, 6, "NZ"),
-            new OpCodeDefinition(0xDE, OpCode.DEC, AddressingMode.ABX, 3, 7, "NZ"),
-
-            // EOR
-            new OpCodeDefinition(0x49, OpCode.EOR, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0x45, OpCode.EOR, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0x55, OpCode.EOR, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0x4D, OpCode.EOR, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0x5D, OpCode.EOR, AddressingMode.ABX, 3, 4, "NZ"),
-            new OpCodeDefinition(0x59, OpCode.EOR, AddressingMode.ABY, 3, 4, "NZ"),
-            new OpCodeDefinition(0x41, OpCode.EOR, AddressingMode.IDX, 2, 6, "NZ"),
-            new OpCodeDefinition(0x51, OpCode.EOR, AddressingMode.IDY, 2, 5, "NZ"),
-
-            // Flag Instructions (Processor Status)
-            new OpCodeDefinition(0x18, OpCode.CLC, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0x38, OpCode.SEC, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0x58, OpCode.CLI, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0x78, OpCode.SEI, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0xB8, OpCode.CLV, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0xD8, OpCode.CLD, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0xF8, OpCode.SED, AddressingMode.NON, 1, 2, ""),
-
-            // INC
-            new OpCodeDefinition(0xE6, OpCode.INC, AddressingMode.ZP0, 2, 5, "NZ"),
-            new OpCodeDefinition(0xF6, OpCode.INC, AddressingMode.ZPX, 2, 6, "NZ"),
-            new OpCodeDefinition(0xEE, OpCode.INC, AddressingMode.ABS, 3, 6, "NZ"),
-            new OpCodeDefinition(0xFE, OpCode.INC, AddressingMode.ABX, 3, 7, "NZ"),
-
-            // JMP
-            new OpCodeDefinition(0x4C, OpCode.JMP, AddressingMode.ABS, 3, 3, ""),
-            new OpCodeDefinition(0x6C, OpCode.JMP, AddressingMode.IND, 3, 5, ""),
-
-            // JSR
-            new OpCodeDefinition(0x20, OpCode.JSR, AddressingMode.ABS, 3, 6, ""),
-
-            // LDA
-            new OpCodeDefinition(0xA9, OpCode.LDA, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0xA5, OpCode.LDA, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0xB5, OpCode.LDA, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0xAD, OpCode.LDA, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0xBD, OpCode.LDA, AddressingMode.ABX, 3, 4, "NZ"),
-            new OpCodeDefinition(0xB9, OpCode.LDA, AddressingMode.ABY, 3, 4, "NZ"),
-            new OpCodeDefinition(0xA1, OpCode.LDA, AddressingMode.IDX, 2, 6, "NZ"),
-            new OpCodeDefinition(0xB1, OpCode.LDA, AddressingMode.IDY, 2, 5, "NZ"),
-
-            // LDX
-            new OpCodeDefinition(0xA2, OpCode.LDX, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0xA6, OpCode.LDX, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0xB6, OpCode.LDX, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0xAE, OpCode.LDX, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0xBE, OpCode.LDX, AddressingMode.ABX, 3, 4, "NZ"),
-
-            // LDY
-            new OpCodeDefinition(0xA0, OpCode.LDY, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0xA4, OpCode.LDY, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0xB4, OpCode.LDY, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0xAC, OpCode.LDY, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0xBC, OpCode.LDY, AddressingMode.ABX, 3, 4, "NZ"),
-
-            // LSR
-            new OpCodeDefinition(0x4A, OpCode.LSR, AddressingMode.ACC, 1, 2, "NZ"),
-            new OpCodeDefinition(0x46, OpCode.LSR, AddressingMode.ZP0, 2, 5, "NZ"),
-            new OpCodeDefinition(0x56, OpCode.LSR, AddressingMode.ZPX, 2, 6, "NZ"),
-            new OpCodeDefinition(0x4E, OpCode.LSR, AddressingMode.ABS, 3, 6, "NZ"),
-            new OpCodeDefinition(0x5E, OpCode.LSR, AddressingMode.ABX, 3, 7, "NZ"),
-
-            // NOP
-            new OpCodeDefinition(0xEA, OpCode.NOP, AddressingMode.IMP, 1, 2, ""),
-
-            // ORA
-            new OpCodeDefinition(0x09, OpCode.ORA, AddressingMode.IMM, 2, 2, "NZ"),
-            new OpCodeDefinition(0x05, OpCode.ORA, AddressingMode.ZP0, 2, 3, "NZ"),
-            new OpCodeDefinition(0x15, OpCode.ORA, AddressingMode.ZPX, 2, 4, "NZ"),
-            new OpCodeDefinition(0x0D, OpCode.ORA, AddressingMode.ABS, 3, 4, "NZ"),
-            new OpCodeDefinition(0x1D, OpCode.ORA, AddressingMode.ABX, 3, 4, "NZ"),
-            new OpCodeDefinition(0x19, OpCode.ORA, AddressingMode.ABY, 3, 4, "NZ"),
-            new OpCodeDefinition(0x01, OpCode.ORA, AddressingMode.IDX, 2, 6, "NZ"),
-            new OpCodeDefinition(0x11, OpCode.ORA, AddressingMode.IDY, 2, 5, "NZ"),
-
-            // Register Instructions
-            new OpCodeDefinition(0xAA, OpCode.TAX, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0x8A, OpCode.TXA, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0xCA, OpCode.DEX, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0xE8, OpCode.INX, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0xA8, OpCode.TAY, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0x98, OpCode.TYA, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0x88, OpCode.DEY, AddressingMode.NON, 1, 2, "NZ"),
-            new OpCodeDefinition(0xC8, OpCode.INY, AddressingMode.NON, 1, 2, "NZ"),
-
-            // ROL
-            new OpCodeDefinition(0x2A, OpCode.ROL, AddressingMode.ACC, 1, 2, "NZC"),
-            new OpCodeDefinition(0x26, OpCode.ROL, AddressingMode.ZP0, 2, 5, "NZC"),
-            new OpCodeDefinition(0x36, OpCode.ROL, AddressingMode.ZPX, 2, 6, "NZC"),
-            new OpCodeDefinition(0x2E, OpCode.ROL, AddressingMode.ABS, 3, 6, "NZC"),
-            new OpCodeDefinition(0x3E, OpCode.ROL, AddressingMode.ABX, 3, 7, "NZC"),
-
-            // ROR
-            new OpCodeDefinition(0x6A, OpCode.ROR, AddressingMode.ACC, 1, 2, "NZC"),
-            new OpCodeDefinition(0x66, OpCode.ROR, AddressingMode.ZP0, 2, 5, "NZC"),
-            new OpCodeDefinition(0x76, OpCode.ROR, AddressingMode.ZPX, 2, 6, "NZC"),
-            new OpCodeDefinition(0x6E, OpCode.ROR, AddressingMode.ABS, 3, 6, "NZC"),
-            new OpCodeDefinition(0x7E, OpCode.ROR, AddressingMode.ABX, 3, 7, "NZC"),
-
-            // RTI
-            new OpCodeDefinition(0x40, OpCode.RTI, AddressingMode.IMP, 1, 6, "NVBDIZC"),
-
-            // RTS
-            new OpCodeDefinition(0x60, OpCode.RTS, AddressingMode.IMP, 1, 6, ""),
-
-            // SBC
-            new OpCodeDefinition(0xE9, OpCode.SBC, AddressingMode.IMM, 2, 2, "NVZC"),
-            new OpCodeDefinition(0xE5, OpCode.SBC, AddressingMode.ZP0, 2, 3, "NVZC"),
-            new OpCodeDefinition(0xF5, OpCode.SBC, AddressingMode.ZPX, 2, 4, "NVZC"),
-            new OpCodeDefinition(0xED, OpCode.SBC, AddressingMode.ABS, 3, 4, "NVZC"),
-            new OpCodeDefinition(0xFD, OpCode.SBC, AddressingMode.ABX, 3, 4, "NVZC"),
-            new OpCodeDefinition(0xF9, OpCode.SBC, AddressingMode.ABY, 3, 4, "NVZC"),
-            new OpCodeDefinition(0xE1, OpCode.SBC, AddressingMode.IDX, 2, 6, "NVZC"),
-            new OpCodeDefinition(0xF1, OpCode.SBC, AddressingMode.IDY, 2, 5, "NVZC"),
-
-            // STA
-            new OpCodeDefinition(0x85, OpCode.STA, AddressingMode.ZP0, 2, 3, ""),
-            new OpCodeDefinition(0x95, OpCode.STA, AddressingMode.ZPX, 2, 4, ""),
-            new OpCodeDefinition(0x8D, OpCode.STA, AddressingMode.ABS, 3, 4, ""),
-            new OpCodeDefinition(0x9D, OpCode.STA, AddressingMode.ABX, 3, 5, ""),
-            new OpCodeDefinition(0x99, OpCode.STA, AddressingMode.ABY, 3, 5, ""),
-            new OpCodeDefinition(0x81, OpCode.STA, AddressingMode.IDX, 2, 6, ""),
-            new OpCodeDefinition(0x91, OpCode.STA, AddressingMode.IDY, 2, 6, ""),
-
-            // Stack Instructions
-            new OpCodeDefinition(0x9A, OpCode.TXS, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0xBA, OpCode.TSX, AddressingMode.NON, 1, 2, ""),
-            new OpCodeDefinition(0x48, OpCode.PHA, AddressingMode.NON, 1, 3, ""),
-            new OpCodeDefinition(0x68, OpCode.PLA, AddressingMode.NON, 1, 4, ""),
-            new OpCodeDefinition(0x08, OpCode.PHP, AddressingMode.NON, 1, 3, ""),
-            new OpCodeDefinition(0x28, OpCode.PLP, AddressingMode.NON, 1, 4, ""),
-
-            // STX
-            new OpCodeDefinition(0x86, OpCode.STX, AddressingMode.ZP0, 2, 3, ""),
-            new OpCodeDefinition(0x96, OpCode.STX, AddressingMode.ZPX, 2, 4, ""),
-            new OpCodeDefinition(0x8E, OpCode.STX, AddressingMode.ABS, 3, 4, ""),
-
-            // STY
-            new OpCodeDefinition(0x84, OpCode.STY, AddressingMode.ZP0, 2, 3, ""),
-            new OpCodeDefinition(0x94, OpCode.STY, AddressingMode.ZPX, 2, 4, ""),
-            new OpCodeDefinition(0x8C, OpCode.STY, AddressingMode.ABS, 3, 4, ""),
-         };
-
-         opCodeTable = new Dictionary<byte, OpCodeDefinition>();
-
-         OpCodeDefinitions.ForEach(x =>
-         {
-            opCodeTable.Add(x.OpCode, x);
+            OpCodeHandlers.Add(x.OpCode, new OpCodeHandler
+            {
+               OpCodeDefinition = x,
+               Operation = x.Nemonic switch
+               {
+                  OpCode.ADC => adcOperation,
+                  OpCode.AND => andOperation,
+                  //OpCode.ASL => throw new NotImplementedException(),
+                  //OpCode.BCC => throw new NotImplementedException(),
+                  //OpCode.BCS => throw new NotImplementedException(),
+                  //OpCode.BEQ => throw new NotImplementedException(),
+                  //OpCode.BIT => throw new NotImplementedException(),
+                  //OpCode.BMI => throw new NotImplementedException(),
+                  //OpCode.BNE => throw new NotImplementedException(),
+                  //OpCode.BPL => throw new NotImplementedException(),
+                  //OpCode.BRK => throw new NotImplementedException(),
+                  //OpCode.BVC => throw new NotImplementedException(),
+                  //OpCode.BVS => throw new NotImplementedException(),
+                  //OpCode.CLC => throw new NotImplementedException(),
+                  //OpCode.CLD => throw new NotImplementedException(),
+                  //OpCode.CLI => throw new NotImplementedException(),
+                  //OpCode.CLV => throw new NotImplementedException(),
+                  //OpCode.CMP => throw new NotImplementedException(),
+                  //OpCode.CPX => throw new NotImplementedException(),
+                  //OpCode.CPY => throw new NotImplementedException(),
+                  //OpCode.DEC => throw new NotImplementedException(),
+                  //OpCode.DEX => throw new NotImplementedException(),
+                  //OpCode.DEY => throw new NotImplementedException(),
+                  //OpCode.EOR => throw new NotImplementedException(),
+                  //OpCode.INC => throw new NotImplementedException(),
+                  //OpCode.INX => throw new NotImplementedException(),
+                  //OpCode.INY => throw new NotImplementedException(),
+                  //OpCode.JMP => throw new NotImplementedException(),
+                  //OpCode.JSR => throw new NotImplementedException(),
+                  //OpCode.LDA => throw new NotImplementedException(),
+                  //OpCode.LDX => throw new NotImplementedException(),
+                  //OpCode.LDY => throw new NotImplementedException(),
+                  //OpCode.LSR => throw new NotImplementedException(),
+                  //OpCode.NOP => throw new NotImplementedException(),
+                  //OpCode.ORA => throw new NotImplementedException(),
+                  //OpCode.PHA => throw new NotImplementedException(),
+                  //OpCode.PHP => throw new NotImplementedException(),
+                  //OpCode.PLA => throw new NotImplementedException(),
+                  //OpCode.PLP => throw new NotImplementedException(),
+                  //OpCode.ROL => throw new NotImplementedException(),
+                  //OpCode.ROR => throw new NotImplementedException(),
+                  //OpCode.RTI => throw new NotImplementedException(),
+                  //OpCode.RTS => throw new NotImplementedException(),
+                  //OpCode.SBC => throw new NotImplementedException(),
+                  //OpCode.SEC => throw new NotImplementedException(),
+                  //OpCode.SED => throw new NotImplementedException(),
+                  //OpCode.SEI => throw new NotImplementedException(),
+                  //OpCode.STA => throw new NotImplementedException(),
+                  //OpCode.STX => throw new NotImplementedException(),
+                  //OpCode.STY => throw new NotImplementedException(),
+                  //OpCode.TAX => throw new NotImplementedException(),
+                  //OpCode.TAY => throw new NotImplementedException(),
+                  //OpCode.TSX => throw new NotImplementedException(),
+                  //OpCode.TXA => throw new NotImplementedException(),
+                  //OpCode.TXS => throw new NotImplementedException(),
+                  //OpCode.TYA => throw new NotImplementedException(),
+                  //_ => throw new NotImplementedException(),
+                  _ => adcOperation,
+               },
+               AddressingMode = x.AddressingMode switch
+               {
+                  AddressingMode.NON => noneAddressingMode,
+                  AddressingMode.ZP0 => zeroPageAddressingMode,
+                  AddressingMode.ZPX => zeroPageXAddressingMode,
+                  AddressingMode.ZPY => zeroPageYAddressingMode,
+                  AddressingMode.ABS => absoluteAddressingMode,
+                  AddressingMode.ABX => absoluteXAddressingMode,
+                  AddressingMode.ABY => absoluteYAddressingMode,
+                  AddressingMode.IND => indirectAddressingMode,
+                  AddressingMode.IDX => indirectXAddressingMode,
+                  AddressingMode.IDY => indirectYAddressingMode,
+                  AddressingMode.IMP => impliedAddressingMode,
+                  AddressingMode.ACC => accumulatorAddressingMode,
+                  AddressingMode.IMM => immediateAddressingMode,
+                  AddressingMode.REL => relativeAddressingMode,
+                  _ => throw new NotImplementedException(),
+               }
+            });
          });
       }
    }

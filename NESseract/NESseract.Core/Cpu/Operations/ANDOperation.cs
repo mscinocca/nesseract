@@ -10,7 +10,8 @@ namespace NESseract.Core.Cpu.Operations
 
          var result = operationValue + registers.A + registers.C_CarryFlag;
 
-         registers.C_CarryFlag = result > 0xFF ? 1 : 0;
+         registers.N_NegativeFlag = (byte)(result & 0x80 >> 7);
+         registers.Z_ZeroFlag = (byte)result == 0 ? 1 : 0;
 
          registers.A = (byte)result;
       }

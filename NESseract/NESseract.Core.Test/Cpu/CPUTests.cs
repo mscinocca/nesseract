@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NESseract.Core.Cpu.Definitions;
 using System;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace NESseract.Core.Test.Cpu
       {
          var cpu = new Core.Cpu.CPU();
 
-         Assert.AreEqual(151, cpu.OpCodeDefinitions.Count);
+         Assert.AreEqual(151, OpCodeDefinitions.OpCodeList.Count);
       }
 
       [TestMethod]
@@ -37,109 +38,6 @@ namespace NESseract.Core.Test.Cpu
 
          Assert.AreEqual(@"NES", identifier);
          Assert.AreEqual(0x1A, fileFormat);
-
-         //cpu.ADC_IMM(10);
-      }
-
-      [TestMethod]
-      public void BinaryMathTest1()
-      {
-         sbyte operand1 = 1;
-         byte uoperand1 = (byte)operand1;
-
-         sbyte operand2 = 1;
-         byte uoperand2 = (byte)operand2;
-
-         var result = operand1 + operand2;
-         var uresult = uoperand1 + uoperand2;
-
-         var curesult = uresult > 0xFF;
-
-         var vresult = result > 127 || result < -128;
-
-         Assert.IsFalse(curesult);
-
-         Assert.IsFalse(vresult);
-      }
-
-      [TestMethod]
-      public void BinaryMathTest2()
-      {
-         var size = sizeof(byte);
-         var size1 = sizeof(sbyte);
-
-         sbyte operand1 = 1;
-         byte uoperand1 = (byte)operand1;
-
-         sbyte operand2 = -1;
-         byte uoperand2 = (byte)operand2;
-
-         byte what = 129;
-         sbyte swhat = (sbyte)what;
-
-         byte what1 = 0x80;
-         sbyte what12 = (sbyte)what1;
-
-         byte what2 = 0xFF;
-         sbyte what22 = (sbyte)what2;
-
-         var result = operand1 + operand2;
-         var result2 = (sbyte)uoperand1 + (sbyte)uoperand2;
-         var result3 = (sbyte)(uoperand1 + uoperand2);
-         var uresult = uoperand1 + uoperand2;
-
-
-         var curesult = uresult > 0xFF;
-
-         var vresult = result > 127 || result < -128;
-
-         Assert.IsTrue(curesult);
-
-         Assert.IsFalse(vresult);
-      }
-
-      [TestMethod]
-      public void BinaryMathTest3()
-      {
-         sbyte operand1 = 127;
-         byte uoperand1 = (byte)operand1;
-
-         sbyte operand2 = 1;
-         byte uoperand2 = (byte)operand2;
-
-         var result = operand1 + operand2;
-         var uresult = uoperand1 + uoperand2;
-
-         var curesult = uresult > 0xFF;
-
-         var vresult = result > 127 || result < -128;
-
-         Assert.IsFalse(curesult);
-
-         Assert.IsTrue(vresult);
-      }
-
-      [TestMethod]
-      public void BinaryMathTest4()
-      {
-         sbyte operand1 = -128;
-         byte uoperand1 = (byte)operand1;
-
-         sbyte operand2 = -1;
-         byte uoperand2 = (byte)operand2;
-
-         var result = operand1 + operand2;
-         var result2 = (sbyte)uoperand1 + (sbyte)uoperand2;
-         var result3 = (sbyte)(uoperand1 + uoperand2);
-         var uresult = uoperand1 + uoperand2;
-
-         var curesult = uresult > 0xFF;
-
-         var vresult = result > 127 || result < -128;
-
-         Assert.IsTrue(curesult);
-
-         Assert.IsTrue(vresult);
       }
    }
 }

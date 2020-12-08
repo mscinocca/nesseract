@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NESseract.Core.Cpu
 {
@@ -8,6 +10,8 @@ namespace NESseract.Core.Cpu
 
       public readonly CPURegisters Registers;
       public readonly CPUMemory Memory;
+
+      public readonly Dictionary<byte, OpCodeHandler> OpCodeHandlers;
 
       private byte[] Rom;
 
@@ -20,7 +24,9 @@ namespace NESseract.Core.Cpu
          Registers = new CPURegisters();
          Memory = new CPUMemory();
 
-         InitializeOpCodeDefinitions();
+         OpCodeHandlers = new Dictionary<byte, OpCodeHandler>();
+
+         InitializeOpCodeHandlers();
       }
 
       public void LoadROM(byte[] rom)
@@ -49,9 +55,11 @@ namespace NESseract.Core.Cpu
 
       public void ProcessOpCode(byte opCode, byte operand1, byte operand2)
       {
-         var opCodeHandler = opCodeTable[opCode];
+         var opCodeHandler = OpCodeHandlers[opCode];
 
-         Console.WriteLine($"{Registers.PC} {opCode:X} {operand1:X} {operand2:X} {opCodeHandler.Nemonic}");
+         var log = opCodeHandler.GetLog(Memory, Registers, Counter, operand1, operand2);
+
+         Debug.WriteLine(log);
       }
    }
 }
