@@ -9,6 +9,9 @@ namespace NESseract.Core.Cpu
    {
       private IOperation adcOperation;
       private IOperation andOperation;
+      private IOperation jmpOperation;
+      private IOperation ldxOperation;
+      private IOperation stxOperation;
 
       private IAddressingMode noneAddressingMode;
       private IAddressingMode absoluteAddressingMode;
@@ -29,6 +32,9 @@ namespace NESseract.Core.Cpu
       {
          adcOperation = new ADCOperation();
          andOperation = new ANDOperation();
+         jmpOperation = new JMPOperation();
+         ldxOperation = new LDXOperation();
+         stxOperation = new STXOperation();
 
          noneAddressingMode = new NoneAddressingMode();
          absoluteAddressingMode = new AbsoluteAddressingMode();
@@ -79,10 +85,10 @@ namespace NESseract.Core.Cpu
                   //OpCode.INC => throw new NotImplementedException(),
                   //OpCode.INX => throw new NotImplementedException(),
                   //OpCode.INY => throw new NotImplementedException(),
-                  //OpCode.JMP => throw new NotImplementedException(),
+                  OpCode.JMP => jmpOperation,
                   //OpCode.JSR => throw new NotImplementedException(),
                   //OpCode.LDA => throw new NotImplementedException(),
-                  //OpCode.LDX => throw new NotImplementedException(),
+                  OpCode.LDX => ldxOperation,
                   //OpCode.LDY => throw new NotImplementedException(),
                   //OpCode.LSR => throw new NotImplementedException(),
                   //OpCode.NOP => throw new NotImplementedException(),
@@ -100,7 +106,7 @@ namespace NESseract.Core.Cpu
                   //OpCode.SED => throw new NotImplementedException(),
                   //OpCode.SEI => throw new NotImplementedException(),
                   //OpCode.STA => throw new NotImplementedException(),
-                  //OpCode.STX => throw new NotImplementedException(),
+                  OpCode.STX => stxOperation,
                   //OpCode.STY => throw new NotImplementedException(),
                   //OpCode.TAX => throw new NotImplementedException(),
                   //OpCode.TAY => throw new NotImplementedException(),

@@ -77,28 +77,56 @@ namespace NESseract.Core.Cpu
          Registers.PC = 0xC000;
       }
 
-      public void Tick()
+      public CPUTickState Tick()
       {
+         byte pcIncrement = 0;
+
          CurrentOpCode = Memory.Memory[Registers.PC];
+         pcIncrement++;
 
-         var operand1 = Memory.Memory[Registers.PC + 1];
+         var opCodeHandler = OpCodeHandlers[CurrentOpCode];
 
-         var operand2 = Memory.Memory[Registers.PC + 2];
+         byte operand1 = 0;
+         byte operand2 = 0;
 
-         ProcessOpCode(CurrentOpCode, operand1, operand2);
-      }
+         if (opCodeHandler.OpCodeDefinition.InstructionBytes >= 2)
+         {
+            operand1 = Memory.Memory[Registers.PC + 1];
+            pcIncrement++;
+         }
 
-      public void ProcessOpCode(byte opCode, byte operand1, byte operand2)
-      {
-         var opCodeHandler = OpCodeHandlers[opCode];
+         if (opCodeHandler.OpCodeDefinition.InstructionBytes == 3)
+         {
+            operand2 = Memory.Memory[Registers.PC + 2];
+            pcIncrement++;
+         }
 
-         var log = opCodeHandler.GetLog(Memory, Registers, Counter, operand1, operand2);
+         var cpuTickState = new CPUTickState
+         {
+            PC = Registers.PC,
+            OpCode = CurrentOpCode,
+            Operand1 = operand1,
+            Operand2 = operand2,
+            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(operand1, operand2))}".Trim(),
+            A = Registers.A,
+            X = Registers.X,
+            Y = Registers.Y,
+            P = Registers.PS,
+            SP = Registers.SP,
+            CYC = Counter,
+         };
+
+         var log = opCodeHandler.GetLog(cpuTickState);
 
          Debug.WriteLine(log);
+
+         Registers.PC += pcIncrement;
 
          var cycles = opCodeHandler.Execute(Memory, Registers, operand1, operand2);
 
          Counter += cycles;
+
+         return cpuTickState;
       }
    }
 }

@@ -16,7 +16,7 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
 
          cpuMemory.Memory[0x4038] = 0x45;
 
-         var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x86, 0x00);
+         var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x86, 0x00, out _);
 
          Assert.AreEqual(0x45, value);
       }

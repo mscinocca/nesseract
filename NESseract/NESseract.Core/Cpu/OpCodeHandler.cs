@@ -14,14 +14,14 @@ namespace NESseract.Core.Cpu
 
       public byte Execute(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         Operation.Execute(AddressingMode, memory, registers, operand1, operand2);
+         Operation.Execute(OpCodeDefinition, AddressingMode, memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
 
-         return OpCodeDefinition.ExecutionCycles;
+         return (byte)(OpCodeDefinition.ExecutionCycles + (OpCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
       }
 
-      public string GetLog(CPUMemory memory, CPURegisters registers, ushort counter, byte operand1, byte operand2)
+      public string GetLog(CPUTickState cpuTickState)
       {
-         return $"{registers.PC:X04}  {OpCodeDefinition.OpCode:X02} {operand1:X02} {operand2:X02}  {OpCodeDefinition.Nemonic} {AddressingMode.GetSyntax(operand1, operand2),-27} A:{registers.A:X02} X:{registers.X:X02} Y:{registers.Y:X02} P:{registers.PS:X02} SP:{registers.SP:X02} PPU:{"0",3},{"0",3} CYC:{counter}";
+         return $"{cpuTickState.PC:X04}  {cpuTickState.OpCode:X02} {cpuTickState.Operand1:X02} {(OpCodeDefinition.InstructionBytes == 3 ? cpuTickState.Operand2 : @"  "):X02}  {cpuTickState,-27} A:{cpuTickState.A:X02} X:{cpuTickState.X:X02} Y:{cpuTickState.Y:X02} P:{cpuTickState.P:X02} SP:{cpuTickState.SP:X02} PPU:{"0",3},{"0",3} CYC:{cpuTickState.CYC}";
       }
    }
 }

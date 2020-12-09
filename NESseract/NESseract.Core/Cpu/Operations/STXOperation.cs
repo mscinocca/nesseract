@@ -3,23 +3,18 @@ using NESseract.Core.Cpu.Definitions;
 
 namespace NESseract.Core.Cpu.Operations
 {
-   public class ANDOperation : IOperation
+   public class STXOperation : IOperation
    {
       public unsafe void Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
          var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out pageBoundaryCrossed);
 
-         var result = operationValue & registers.A;
-
-         registers.N_NegativeFlag = (byte)(result & 0x80 >> 7);
-         registers.Z_ZeroFlag = (byte)result == 0 ? 1 : 0;
-
-         registers.A = (byte)result;
+         memory.Memory[operationValue] = registers.X;
       }
 
       public string GetSyntax(byte operand1, byte operand2)
       {
-         return string.Empty;
+         return $"= {operand2:X02}";
       }
    }
 }

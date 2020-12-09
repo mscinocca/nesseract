@@ -1,12 +1,13 @@
 ﻿using NESseract.Core.Cpu.AddressingModes;
+using NESseract.Core.Cpu.Definitions;
 
 namespace NESseract.Core.Cpu.Operations
 {
    public class ADCOperation : IOperation
    {
-      public unsafe void Execute(IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+      public void Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
-         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2);
+         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out pageBoundaryCrossed);
 
          var result = operationValue + registers.A + registers.C_CarryFlag;
 
@@ -18,6 +19,11 @@ namespace NESseract.Core.Cpu.Operations
             (result >= 0x80 && operand1 < 0x80 && operand2 < 0x80) ? 1 : 0;
 
          registers.A = (byte)result;
+      }
+
+      public string GetSyntax(byte operand1, byte operand2)
+      {
+         return string.Empty;
       }
    }
 }

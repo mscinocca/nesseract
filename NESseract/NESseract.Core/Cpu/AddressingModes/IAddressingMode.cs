@@ -2,7 +2,7 @@
 {
    public interface IAddressingMode
    {
-      ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2);
+      ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed);
 
       string GetSyntax(byte operand1, byte operand2);
    }

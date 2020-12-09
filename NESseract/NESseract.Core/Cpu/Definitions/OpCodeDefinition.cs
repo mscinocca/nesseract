@@ -12,6 +12,8 @@
 
       public byte ExecutionCycles;
 
+      public bool AddExecutionCycleOnPageBoundaryCross;
+
       public string AffectedFlags;
 
       public OpCodeDefinition(
@@ -20,6 +22,7 @@
          AddressingMode addressingMode,
          byte instructionBytes,
          byte executionCycles,
+         bool addExecutionCycleOnPageBoundaryCross,
          string affectedFlags)
       {
          OpCode = opCode;
@@ -27,6 +30,7 @@
          AddressingMode = addressingMode;
          InstructionBytes = instructionBytes;
          ExecutionCycles = executionCycles;
+         AddExecutionCycleOnPageBoundaryCross = addExecutionCycleOnPageBoundaryCross;
          AffectedFlags = affectedFlags;
       }
    }
