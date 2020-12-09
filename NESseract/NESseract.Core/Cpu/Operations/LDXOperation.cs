@@ -5,7 +5,7 @@ namespace NESseract.Core.Cpu.Operations
 {
    public class LDXOperation : IOperation
    {
-      public unsafe void Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+      public void Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
          var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out pageBoundaryCrossed);
 

@@ -11,6 +11,7 @@ namespace NESseract.Core.Cpu
       private IOperation andOperation;
       private IOperation jmpOperation;
       private IOperation ldxOperation;
+      private IOperation nopOperation;
       private IOperation stxOperation;
 
       private IAddressingMode noneAddressingMode;
@@ -34,6 +35,7 @@ namespace NESseract.Core.Cpu
          andOperation = new ANDOperation();
          jmpOperation = new JMPOperation();
          ldxOperation = new LDXOperation();
+         nopOperation = new NOPOperation();
          stxOperation = new STXOperation();
 
          noneAddressingMode = new NoneAddressingMode();
@@ -91,7 +93,7 @@ namespace NESseract.Core.Cpu
                   OpCode.LDX => ldxOperation,
                   //OpCode.LDY => throw new NotImplementedException(),
                   //OpCode.LSR => throw new NotImplementedException(),
-                  //OpCode.NOP => throw new NotImplementedException(),
+                  OpCode.NOP => nopOperation,
                   //OpCode.ORA => throw new NotImplementedException(),
                   //OpCode.PHA => throw new NotImplementedException(),
                   //OpCode.PHP => throw new NotImplementedException(),
@@ -115,7 +117,7 @@ namespace NESseract.Core.Cpu
                   //OpCode.TXS => throw new NotImplementedException(),
                   //OpCode.TYA => throw new NotImplementedException(),
                   //_ => throw new NotImplementedException(),
-                  _ => adcOperation,
+                  _ => nopOperation,
                },
                AddressingMode = x.AddressingMode switch
                {
