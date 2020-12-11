@@ -79,10 +79,9 @@ namespace NESseract.Core.Cpu
 
       public CPUTickState Tick()
       {
-         byte pcIncrement = 0;
+         var registerPC = Registers.PC;
 
-         CurrentOpCode = Memory.Memory[Registers.PC];
-         pcIncrement++;
+         CurrentOpCode = Memory.Memory[Registers.PC++];
 
          var opCodeHandler = OpCodeHandlers[CurrentOpCode];
 
@@ -91,23 +90,21 @@ namespace NESseract.Core.Cpu
 
          if (opCodeHandler.OpCodeDefinition.InstructionBytes >= 2)
          {
-            operand1 = Memory.Memory[Registers.PC + 1];
-            pcIncrement++;
+            operand1 = Memory.Memory[Registers.PC++];
          }
 
          if (opCodeHandler.OpCodeDefinition.InstructionBytes == 3)
          {
-            operand2 = Memory.Memory[Registers.PC + 2];
-            pcIncrement++;
+            operand2 = Memory.Memory[Registers.PC++];
          }
 
          var cpuTickState = new CPUTickState
          {
-            PC = Registers.PC,
+            PC = registerPC,
             OpCode = CurrentOpCode,
             Operand1 = operand1,
             Operand2 = operand2,
-            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(operand1, operand2))}".Trim(),
+            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(Registers, operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2))}".Trim(),
             A = Registers.A,
             X = Registers.X,
             Y = Registers.Y,
@@ -119,8 +116,6 @@ namespace NESseract.Core.Cpu
          var log = opCodeHandler.GetLog(cpuTickState);
 
          Debug.WriteLine(log);
-
-         Registers.PC += pcIncrement;
 
          var cycles = opCodeHandler.Execute(Memory, Registers, operand1, operand2);
 

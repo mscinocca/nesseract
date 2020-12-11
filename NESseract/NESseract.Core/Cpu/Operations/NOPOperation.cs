@@ -5,12 +5,12 @@ namespace NESseract.Core.Cpu.Operations
 {
    public class NOPOperation : IOperation
    {
-      public void Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+      public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         pageBoundaryCrossed = false;
+         return opCodeDefinition.ExecutionCycles;
       }
 
-      public string GetSyntax(byte operand1, byte operand2)
+      public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          return string.Empty;
       }

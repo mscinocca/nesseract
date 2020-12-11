@@ -15,43 +15,43 @@
       public byte N_NegativeFlag
       {
          get { return (byte)(PS >> 7 & 1); }
-         set { PS |= (byte)(value << 7); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 7) : PS & (0xFF ^ (1 << 7))); }
       }
 
       public byte Z_ZeroFlag
       {
          get { return (byte)(PS >> 1 & 1); }
-         set { PS |= (byte)(value << 1); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 1) : PS & (0xFF ^ (1 << 1))); }
       }
 
       public byte C_CarryFlag
       {
          get { return (byte)(PS >> 0 & 1); }
-         set { PS |= (byte)(value << 0); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 0) : PS & (0xFF ^ (1 << 0))); }
       }
 
       public byte I_InterruptDisable
       {
          get { return (byte)(PS >> 2 & 1); }
-         set { PS |= (byte)(value << 2); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 2) : PS & (0xFF ^ (1 << 2))); }
       }
 
       public byte D_DecimalMode
       {
          get { return (byte)(PS >> 3 & 1); }
-         set { PS |= (byte)(value << 3); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 3) : PS & (0xFF ^ (1 << 3))); }
       }
 
       public byte V_OverflowFlag
       {
          get { return (byte)(PS >> 6 & 1); }
-         set { PS |= (byte)(value << 6); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 6) : PS & (0xFF ^ (1 << 6))); }
       }
 
       public byte B_BreakCommand
       {
          get { return (byte)(PS >> 4 & 1); }
-         set { PS |= (byte)(value << 4); }
+         set { PS = (byte)(value == 1 ? PS | (1 << 4) : PS & (0xFF ^ (1 << 4))); }
       }
 
       public CPURegisters()

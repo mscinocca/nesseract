@@ -2,7 +2,7 @@
 {
    public class IndirectXAddressingMode : IAddressingMode
    {
-      public ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+      public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
          var indexedAddress = (byte)(operand1 + registers.X);
 
@@ -10,10 +10,22 @@
 
          pageBoundaryCrossed = false;
 
+         return (ushort)address;
+      }
+
+      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+      {
+         var address = GetAddress(memory, registers, operand1, operand2, out pageBoundaryCrossed);
+
          return memory.Memory[address];
       }
 
-      public string GetSyntax(byte operand1, byte operand2)
+      public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
+      {
+         memory.Memory[address] = value;
+      }
+
+      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
       {
          return $"(${operand1:X02},X)";
       }

@@ -42,14 +42,14 @@ namespace NESseract.Core.Cpu.Definitions
             new OpCodeDefinition(0x2C, OpCode.BIT, AddressingMode.ABS, 3, 4, false, "NVZ"),
 
             // Branch Instructions
-            new OpCodeDefinition(0x10, OpCode.BPL, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0x30, OpCode.BMI, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0x50, OpCode.BVC, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0x70, OpCode.BVS, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0x90, OpCode.BCC, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0xB0, OpCode.BCS, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0xD0, OpCode.BNE, AddressingMode.NON, 2, 2, false, ""),
-            new OpCodeDefinition(0xF0, OpCode.BEQ, AddressingMode.NON, 2, 2, false, ""),
+            new OpCodeDefinition(0x10, OpCode.BPL, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0x30, OpCode.BMI, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0x50, OpCode.BVC, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0x70, OpCode.BVS, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0x90, OpCode.BCC, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0xB0, OpCode.BCS, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0xD0, OpCode.BNE, AddressingMode.REL, 2, 2, true,  ""),
+            new OpCodeDefinition(0xF0, OpCode.BEQ, AddressingMode.REL, 2, 2, true,  ""),
 
             // BRK
             new OpCodeDefinition(0x00, OpCode.BRK, AddressingMode.IMP, 1, 7, false, "B"),

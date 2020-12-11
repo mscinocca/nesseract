@@ -9,10 +9,38 @@ namespace NESseract.Core.Cpu
    {
       private IOperation adcOperation;
       private IOperation andOperation;
+      private IOperation bccOperation;
+      private IOperation bcsOperation;
+      private IOperation beqOperation;
+      private IOperation bitOperation;
+      private IOperation bmiOperation;
+      private IOperation bneOperation;
+      private IOperation bplOperation;
+      private IOperation bvcOperation;
+      private IOperation bvsOperation;
+      private IOperation clcOperation;
+      private IOperation cldOperation;
+      private IOperation cliOperation;
+      private IOperation clvOperation;
+      private IOperation cmpOperation;
       private IOperation jmpOperation;
+      private IOperation jsrOperation;
+      private IOperation ldaOperation;
       private IOperation ldxOperation;
+      private IOperation ldyOperation;
       private IOperation nopOperation;
+      private IOperation oraOperation;
+      private IOperation phaOperation;
+      private IOperation phpOperation;
+      private IOperation plaOperation;
+      private IOperation plpOperation;
+      private IOperation rtsOperation;
+      private IOperation secOperation;
+      private IOperation sedOperation;
+      private IOperation seiOperation;
+      private IOperation staOperation;
       private IOperation stxOperation;
+      private IOperation styOperation;
 
       private IAddressingMode noneAddressingMode;
       private IAddressingMode absoluteAddressingMode;
@@ -33,10 +61,38 @@ namespace NESseract.Core.Cpu
       {
          adcOperation = new ADCOperation();
          andOperation = new ANDOperation();
+         bccOperation = new BCCOperation();
+         bcsOperation = new BCSOperation();
+         beqOperation = new BEQOperation();
+         bitOperation = new BITOperation();
+         bmiOperation = new BMIOperation();
+         bneOperation = new BNEOperation();
+         bplOperation = new BPLOperation();
+         bvcOperation = new BVCOperation();
+         bvsOperation = new BVSOperation();
+         clcOperation = new CLCOperation();
+         cldOperation = new CLDOperation();
+         cliOperation = new CLIOperation();
+         clvOperation = new CLVOperation();
+         cmpOperation = new CMPOperation();
          jmpOperation = new JMPOperation();
+         jsrOperation = new JSROperation();
+         ldaOperation = new LDAOperation();
          ldxOperation = new LDXOperation();
+         ldyOperation = new LDYOperation();
          nopOperation = new NOPOperation();
+         oraOperation = new ORAOperation();
+         phaOperation = new PHAOperation();
+         phpOperation = new PHPOperation();
+         plaOperation = new PLAOperation();
+         plpOperation = new PLPOperation();
+         rtsOperation = new RTSOperation();
+         secOperation = new SECOperation();
+         sedOperation = new SEDOperation();
+         seiOperation = new SEIOperation();
+         staOperation = new STAOperation();
          stxOperation = new STXOperation();
+         styOperation = new STYOperation();
 
          noneAddressingMode = new NoneAddressingMode();
          absoluteAddressingMode = new AbsoluteAddressingMode();
@@ -63,21 +119,21 @@ namespace NESseract.Core.Cpu
                   OpCode.ADC => adcOperation,
                   OpCode.AND => andOperation,
                   //OpCode.ASL => throw new NotImplementedException(),
-                  //OpCode.BCC => throw new NotImplementedException(),
-                  //OpCode.BCS => throw new NotImplementedException(),
-                  //OpCode.BEQ => throw new NotImplementedException(),
-                  //OpCode.BIT => throw new NotImplementedException(),
-                  //OpCode.BMI => throw new NotImplementedException(),
-                  //OpCode.BNE => throw new NotImplementedException(),
-                  //OpCode.BPL => throw new NotImplementedException(),
+                  OpCode.BCC => bccOperation,
+                  OpCode.BCS => bcsOperation,
+                  OpCode.BEQ => beqOperation,
+                  OpCode.BIT => bitOperation,
+                  OpCode.BMI => bmiOperation,
+                  OpCode.BNE => bneOperation,
+                  OpCode.BPL => bplOperation,
                   //OpCode.BRK => throw new NotImplementedException(),
-                  //OpCode.BVC => throw new NotImplementedException(),
-                  //OpCode.BVS => throw new NotImplementedException(),
-                  //OpCode.CLC => throw new NotImplementedException(),
-                  //OpCode.CLD => throw new NotImplementedException(),
-                  //OpCode.CLI => throw new NotImplementedException(),
-                  //OpCode.CLV => throw new NotImplementedException(),
-                  //OpCode.CMP => throw new NotImplementedException(),
+                  OpCode.BVC => bvcOperation,
+                  OpCode.BVS => bvsOperation,
+                  OpCode.CLC => clcOperation,
+                  OpCode.CLD => cldOperation,
+                  OpCode.CLI => cliOperation,
+                  OpCode.CLV => clvOperation,
+                  OpCode.CMP => cmpOperation,
                   //OpCode.CPX => throw new NotImplementedException(),
                   //OpCode.CPY => throw new NotImplementedException(),
                   //OpCode.DEC => throw new NotImplementedException(),
@@ -88,28 +144,28 @@ namespace NESseract.Core.Cpu
                   //OpCode.INX => throw new NotImplementedException(),
                   //OpCode.INY => throw new NotImplementedException(),
                   OpCode.JMP => jmpOperation,
-                  //OpCode.JSR => throw new NotImplementedException(),
-                  //OpCode.LDA => throw new NotImplementedException(),
+                  OpCode.JSR => jsrOperation,
+                  OpCode.LDA => ldaOperation,
                   OpCode.LDX => ldxOperation,
-                  //OpCode.LDY => throw new NotImplementedException(),
+                  OpCode.LDY => ldyOperation,
                   //OpCode.LSR => throw new NotImplementedException(),
                   OpCode.NOP => nopOperation,
-                  //OpCode.ORA => throw new NotImplementedException(),
-                  //OpCode.PHA => throw new NotImplementedException(),
-                  //OpCode.PHP => throw new NotImplementedException(),
-                  //OpCode.PLA => throw new NotImplementedException(),
-                  //OpCode.PLP => throw new NotImplementedException(),
+                  OpCode.ORA => oraOperation,
+                  OpCode.PHA => phaOperation,
+                  OpCode.PHP => phpOperation,
+                  OpCode.PLA => plaOperation,
+                  OpCode.PLP => plpOperation,
                   //OpCode.ROL => throw new NotImplementedException(),
                   //OpCode.ROR => throw new NotImplementedException(),
                   //OpCode.RTI => throw new NotImplementedException(),
-                  //OpCode.RTS => throw new NotImplementedException(),
+                  OpCode.RTS => rtsOperation,
                   //OpCode.SBC => throw new NotImplementedException(),
-                  //OpCode.SEC => throw new NotImplementedException(),
-                  //OpCode.SED => throw new NotImplementedException(),
-                  //OpCode.SEI => throw new NotImplementedException(),
-                  //OpCode.STA => throw new NotImplementedException(),
+                  OpCode.SEC => secOperation,
+                  OpCode.SED => sedOperation,
+                  OpCode.SEI => seiOperation,
+                  OpCode.STA => staOperation,
                   OpCode.STX => stxOperation,
-                  //OpCode.STY => throw new NotImplementedException(),
+                  OpCode.STY => styOperation,
                   //OpCode.TAX => throw new NotImplementedException(),
                   //OpCode.TAY => throw new NotImplementedException(),
                   //OpCode.TSX => throw new NotImplementedException(),

@@ -20,7 +20,7 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       [TestMethod]
       public void GetSyntaxTest()
       {
-         var syntax = addressingMode.GetSyntax(0x32, 0x40);
+         var syntax = addressingMode.GetSyntax(cpuRegisters, 0x32, 0x40);
 
          Assert.AreEqual("$32,X", syntax);
       }

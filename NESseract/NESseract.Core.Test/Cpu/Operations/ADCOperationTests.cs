@@ -16,7 +16,7 @@ namespace NESseract.Core.Test.Cpu.Operations
 
          cpuRegisters.A = 0x30;
 
-         operation.Execute(opCodeDefinition, immediateAddressingMode, cpuMemory, cpuRegisters, 0x32, 0x00, out _);
+         operation.Execute(opCodeDefinition, immediateAddressingMode, cpuMemory, cpuRegisters, 0x32, 0x00);
 
          Assert.AreEqual(0x62, cpuRegisters.A);
       }
@@ -30,7 +30,7 @@ namespace NESseract.Core.Test.Cpu.Operations
 
          cpuMemory.Memory[0x45] = 0x32;
 
-         operation.Execute(opCodeDefinition, zeroPageAddressingMode, cpuMemory, cpuRegisters, 0x45, 0x00, out _);
+         operation.Execute(opCodeDefinition, zeroPageAddressingMode, cpuMemory, cpuRegisters, 0x45, 0x00);
 
          Assert.AreEqual(0x62, cpuRegisters.A);
       }

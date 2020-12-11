@@ -56,7 +56,7 @@ namespace NESseract.Core.Test.Cpu
          var cpu = new Core.Cpu.CPU();
          cpu.LoadROM(rom);
 
-         for (var i = 0; i < 6; i++)
+         for (var i = 0; i < 197; i++)
          {
             var cpuTickState = cpu.Tick();
 

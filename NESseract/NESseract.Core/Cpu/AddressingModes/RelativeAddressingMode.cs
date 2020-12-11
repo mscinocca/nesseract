@@ -1,17 +1,31 @@
-﻿namespace NESseract.Core.Cpu.AddressingModes
+﻿using System;
+
+namespace NESseract.Core.Cpu.AddressingModes
 {
    public class RelativeAddressingMode : IAddressingMode
    {
-      public ushort GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+      public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
-         pageBoundaryCrossed = false;
+         var address = registers.PC + (sbyte)operand1;
 
-         return (ushort)(registers.PC + (sbyte)operand1);
+         pageBoundaryCrossed = (address & 0xFF00) != (registers.PC & 0xFF00);
+
+         return (ushort)address;
       }
 
-      public string GetSyntax(byte operand1, byte operand2)
+      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
-         return $"${operand1:X02}";
+         throw new NotImplementedException("GetValue not valid for this addressing mode");
+      }
+
+      public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
+      {
+         throw new NotImplementedException("SetValue not valid for this addressing mode");
+      }
+
+      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
+      {
+         return $"${registers.PC + (sbyte)operand1:X02}";
       }
    }
 }
