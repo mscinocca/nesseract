@@ -19,7 +19,9 @@ namespace NESseract.Core.Cpu.Operations
 
       public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return $"= {addressingMode.GetValue(memory, registers, operand1, operand2, out _):X02}";
+         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+
+         return $"= {operationValue:X02}";
       }
    }
 }

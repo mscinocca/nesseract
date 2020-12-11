@@ -51,6 +51,12 @@ namespace NESseract.Core.Cpu
       private IOperation staOperation;
       private IOperation stxOperation;
       private IOperation styOperation;
+      private IOperation taxOperation;
+      private IOperation tayOperation;
+      private IOperation tsxOperation;
+      private IOperation txaOperation;
+      private IOperation txsOperation;
+      private IOperation tyaOperation;
 
       private IAddressingMode noneAddressingMode;
       private IAddressingMode absoluteAddressingMode;
@@ -113,6 +119,12 @@ namespace NESseract.Core.Cpu
          staOperation = new STAOperation();
          stxOperation = new STXOperation();
          styOperation = new STYOperation();
+         taxOperation = new TAXOperation();
+         tayOperation = new TAYOperation();
+         tsxOperation = new TSXOperation();
+         txaOperation = new TXAOperation();
+         txsOperation = new TXSOperation();
+         tyaOperation = new TYAOperation();
 
          noneAddressingMode = new NoneAddressingMode();
          absoluteAddressingMode = new AbsoluteAddressingMode();
@@ -186,12 +198,12 @@ namespace NESseract.Core.Cpu
                   OpCode.STA => staOperation,
                   OpCode.STX => stxOperation,
                   OpCode.STY => styOperation,
-                  //OpCode.TAX => throw new NotImplementedException(),
-                  //OpCode.TAY => throw new NotImplementedException(),
-                  //OpCode.TSX => throw new NotImplementedException(),
-                  //OpCode.TXA => throw new NotImplementedException(),
-                  //OpCode.TXS => throw new NotImplementedException(),
-                  //OpCode.TYA => throw new NotImplementedException(),
+                  OpCode.TAX => taxOperation,
+                  OpCode.TAY => tayOperation,
+                  OpCode.TSX => tsxOperation,
+                  OpCode.TXA => txaOperation,
+                  OpCode.TXS => txsOperation,
+                  OpCode.TYA => tyaOperation,
                   //_ => throw new NotImplementedException(),
                   _ => nopOperation,
                },

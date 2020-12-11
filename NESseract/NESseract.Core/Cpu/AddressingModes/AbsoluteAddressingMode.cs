@@ -23,7 +23,7 @@
 
       public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
       {
-         return $"${operand1 | operand2 << 0x08:X02}";
+         return $"${operand1 | operand2 << 0x08:X04}";
       }
    }
 }

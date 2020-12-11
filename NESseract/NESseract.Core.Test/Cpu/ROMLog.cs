@@ -27,7 +27,7 @@ namespace NESseract.Core.Test.Cpu
                Y = byte.Parse(logLine.Substring(60, 3).Trim(), NumberStyles.HexNumber),
                P = byte.Parse(logLine.Substring(65, 3).Trim(), NumberStyles.HexNumber),
                SP = byte.Parse(logLine.Substring(71, 3).Trim(), NumberStyles.HexNumber),
-               CYC = ushort.Parse(logLine.Substring(90).Trim())
+               CYC = ushort.Parse(logLine[90..].Trim())
             };
 
             ROMLogLines.Add(romLogLine);
