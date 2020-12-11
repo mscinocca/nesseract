@@ -23,6 +23,15 @@ namespace NESseract.Core.Cpu
       private IOperation cliOperation;
       private IOperation clvOperation;
       private IOperation cmpOperation;
+      private IOperation cpxOperation;
+      private IOperation cpyOperation;
+      private IOperation decOperation;
+      private IOperation dexOperation;
+      private IOperation deyOperation;
+      private IOperation eorOperation;
+      private IOperation incOperation;
+      private IOperation inxOperation;
+      private IOperation inyOperation;
       private IOperation jmpOperation;
       private IOperation jsrOperation;
       private IOperation ldaOperation;
@@ -35,6 +44,7 @@ namespace NESseract.Core.Cpu
       private IOperation plaOperation;
       private IOperation plpOperation;
       private IOperation rtsOperation;
+      private IOperation sbcOperation;
       private IOperation secOperation;
       private IOperation sedOperation;
       private IOperation seiOperation;
@@ -75,6 +85,15 @@ namespace NESseract.Core.Cpu
          cliOperation = new CLIOperation();
          clvOperation = new CLVOperation();
          cmpOperation = new CMPOperation();
+         cpxOperation = new CPXOperation();
+         cpyOperation = new CPYOperation();
+         decOperation = new DECOperation();
+         dexOperation = new DEXOperation();
+         deyOperation = new DEYOperation();
+         eorOperation = new EOROperation();
+         incOperation = new INCOperation();
+         inxOperation = new INXOperation();
+         inyOperation = new INYOperation();
          jmpOperation = new JMPOperation();
          jsrOperation = new JSROperation();
          ldaOperation = new LDAOperation();
@@ -87,6 +106,7 @@ namespace NESseract.Core.Cpu
          plaOperation = new PLAOperation();
          plpOperation = new PLPOperation();
          rtsOperation = new RTSOperation();
+         sbcOperation = new SBCOperation();
          secOperation = new SECOperation();
          sedOperation = new SEDOperation();
          seiOperation = new SEIOperation();
@@ -134,15 +154,15 @@ namespace NESseract.Core.Cpu
                   OpCode.CLI => cliOperation,
                   OpCode.CLV => clvOperation,
                   OpCode.CMP => cmpOperation,
-                  //OpCode.CPX => throw new NotImplementedException(),
-                  //OpCode.CPY => throw new NotImplementedException(),
-                  //OpCode.DEC => throw new NotImplementedException(),
-                  //OpCode.DEX => throw new NotImplementedException(),
-                  //OpCode.DEY => throw new NotImplementedException(),
-                  //OpCode.EOR => throw new NotImplementedException(),
-                  //OpCode.INC => throw new NotImplementedException(),
-                  //OpCode.INX => throw new NotImplementedException(),
-                  //OpCode.INY => throw new NotImplementedException(),
+                  OpCode.CPX => cpxOperation,
+                  OpCode.CPY => cpyOperation,
+                  OpCode.DEC => decOperation,
+                  OpCode.DEX => dexOperation,
+                  OpCode.DEY => deyOperation,
+                  OpCode.EOR => eorOperation,
+                  OpCode.INC => incOperation,
+                  OpCode.INX => inxOperation,
+                  OpCode.INY => inyOperation,
                   OpCode.JMP => jmpOperation,
                   OpCode.JSR => jsrOperation,
                   OpCode.LDA => ldaOperation,
@@ -159,7 +179,7 @@ namespace NESseract.Core.Cpu
                   //OpCode.ROR => throw new NotImplementedException(),
                   //OpCode.RTI => throw new NotImplementedException(),
                   OpCode.RTS => rtsOperation,
-                  //OpCode.SBC => throw new NotImplementedException(),
+                  OpCode.SBC => sbcOperation,
                   OpCode.SEC => secOperation,
                   OpCode.SED => sedOperation,
                   OpCode.SEI => seiOperation,

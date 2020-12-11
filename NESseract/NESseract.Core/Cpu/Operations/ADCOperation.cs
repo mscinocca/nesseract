@@ -15,8 +15,8 @@ namespace NESseract.Core.Cpu.Operations
          registers.Z_ZeroFlag = (byte)result == 0 ? 1 : 0;
          registers.C_CarryFlag = result > 0xFF ? 1 : 0;
          registers.V_OverflowFlag = 
-            (result < 0x80 && operand1 >= 0x80 && operand2 >= 0x80) ||
-            (result >= 0x80 && operand1 < 0x80 && operand2 < 0x80) ? 1 : 0;
+            (result < 0x80 && operationValue >= 0x80 && registers.A >= 0x80) ||
+            (result >= 0x80 && operationValue < 0x80 && registers.A < 0x80) ? 1 : 0;
 
          registers.A = (byte)result;
 

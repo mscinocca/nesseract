@@ -18,7 +18,7 @@ namespace NESseract.Core.Cpu.AddressingModes
 
       public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
       {
-         memory.Memory[address] = value;
+         throw new NotImplementedException("SetValue not valid for this addressing mode");
       }
 
       public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)

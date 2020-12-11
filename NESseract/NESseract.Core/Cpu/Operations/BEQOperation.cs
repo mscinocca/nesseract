@@ -18,7 +18,7 @@ namespace NESseract.Core.Cpu.Operations
             branchTaken = true;
          }
 
-         return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0) + (branchTaken ? 1 : 0));
+         return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed && branchTaken ? 1 : 0) + (branchTaken ? 1 : 0));
       }
 
       public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
