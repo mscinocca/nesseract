@@ -10,7 +10,7 @@ namespace NESseract.Core.Cpu.Operations
          var operationAddress = addressingMode.GetAddress(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
 
          memory.Stack.Span[registers.SP--] = (byte)((registers.PC >> 0x08) & 0xFF);
-         memory.Stack.Span[registers.SP--] = (byte)(registers.PC & 0xFF);
+         memory.Stack.Span[registers.SP--] = (byte)((registers.PC & 0xFF) - 1);
 
          registers.PC = operationAddress;
 

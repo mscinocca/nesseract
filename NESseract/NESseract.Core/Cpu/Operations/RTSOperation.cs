@@ -7,7 +7,7 @@ namespace NESseract.Core.Cpu.Operations
    {
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var lowByte = memory.Stack.Span[++registers.SP];
+         var lowByte = (byte)(memory.Stack.Span[++registers.SP] + 1);
          var highByte = memory.Stack.Span[++registers.SP];
 
          registers.PC = (ushort)(lowByte | highByte << 0x08);
