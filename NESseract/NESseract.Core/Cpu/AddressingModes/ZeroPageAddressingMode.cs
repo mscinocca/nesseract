@@ -21,7 +21,7 @@
          memory.Memory[address] = value;
       }
 
-      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
+      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          return $"${operand1:X02}";
       }

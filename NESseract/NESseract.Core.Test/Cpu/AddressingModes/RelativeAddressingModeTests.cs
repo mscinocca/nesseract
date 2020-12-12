@@ -21,7 +21,7 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       {
          cpuRegisters.PC = 0x4000;
 
-         var syntax = addressingMode.GetSyntax(cpuRegisters, 0x32, 0x40);
+         var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
 
          Assert.AreEqual("$4032", syntax);
       }

@@ -6,7 +6,7 @@
       {
          var indexedAddress = (byte)(operand1 + registers.X);
 
-         var address = memory.Memory[indexedAddress] | memory.Memory[indexedAddress + 1] << 0x08;
+         var address = memory.Memory[indexedAddress] | memory.Memory[(byte)(indexedAddress + 1)] << 0x08;
 
          pageBoundaryCrossed = false;
 
@@ -25,9 +25,13 @@
          memory.Memory[address] = value;
       }
 
-      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
+      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return $"(${operand1:X02},X)";
+         var indexedAddress = (byte)(operand1 + registers.X);
+
+         var address = memory.Memory[indexedAddress] | memory.Memory[(byte)(indexedAddress + 1)] << 0x08;
+
+         return $"(${operand1:X02},X) @ {indexedAddress:X02} = {address:X04}";
       }
    }
 }

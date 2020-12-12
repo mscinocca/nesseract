@@ -104,7 +104,7 @@ namespace NESseract.Core.Cpu
             OpCode = CurrentOpCode,
             Operand1 = operand1,
             Operand2 = operand2,
-            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(Registers, operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2))}".Trim(),
+            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(Memory, Registers, operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2))}".Trim(),
             A = Registers.A,
             X = Registers.X,
             Y = Registers.Y,

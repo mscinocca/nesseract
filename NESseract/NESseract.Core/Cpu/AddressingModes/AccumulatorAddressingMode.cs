@@ -1,12 +1,12 @@
-﻿using System;
-
-namespace NESseract.Core.Cpu.AddressingModes
+﻿namespace NESseract.Core.Cpu.AddressingModes
 {
    public class AccumulatorAddressingMode : IAddressingMode
    {
       public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
       {
-         throw new NotImplementedException("GetAddress not valid for this addressing mode");
+         pageBoundaryCrossed = false;
+
+         return 0;
       }
 
       public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
@@ -21,7 +21,7 @@ namespace NESseract.Core.Cpu.AddressingModes
          registers.A = value;
       }
 
-      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
+      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          return "A";
       }

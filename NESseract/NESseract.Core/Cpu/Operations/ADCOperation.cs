@@ -25,7 +25,16 @@ namespace NESseract.Core.Cpu.Operations
 
       public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return string.Empty;
+         if (opCodeDefinition.AddressingMode == AddressingMode.IMM)
+         {
+            return string.Empty;
+         }
+         else
+         {
+            var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+
+            return $"= {operationValue:X02}";
+         }
       }
    }
 }

@@ -7,7 +7,7 @@ namespace NESseract.Core.Cpu.Operations
    {
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var operationAddress = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+         var operationAddress = addressingMode.GetAddress(memory, registers, operand1, operand2, out _);
          var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
 
          var result = operationValue + 1;
@@ -22,7 +22,16 @@ namespace NESseract.Core.Cpu.Operations
 
       public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return string.Empty;
+         if (opCodeDefinition.AddressingMode == AddressingMode.IMM || opCodeDefinition.AddressingMode == AddressingMode.ACC)
+         {
+            return string.Empty;
+         }
+         else
+         {
+            var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+
+            return $"= {operationValue:X02}";
+         }
       }
    }
 }

@@ -29,9 +29,11 @@ namespace NESseract.Core.Cpu.AddressingModes
          memory.Memory[address] = value;
       }
 
-      public string GetSyntax(CPURegisters registers, byte operand1, byte operand2)
+      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         return $"(${operand1 | operand2 << 0x08:X02})";
+         var address = GetAddress(memory, registers, operand1, operand2, out _);
+
+         return $"(${operand1 | operand2 << 0x08:X04}) = {address:X04}";
       }
    }
 }

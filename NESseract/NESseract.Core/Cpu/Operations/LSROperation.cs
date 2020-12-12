@@ -3,25 +3,28 @@ using NESseract.Core.Cpu.Definitions;
 
 namespace NESseract.Core.Cpu.Operations
 {
-   public class CPXOperation : IOperation
+   public class LSROperation : IOperation
    {
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
+         var operationAddress = addressingMode.GetAddress(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
 
-         registers.C_CarryFlag = registers.X >= operationValue ? 1 : 0;
+         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
 
-         var result = registers.X - operationValue;
+         var result = operationValue >> 1;
 
-         registers.N_NegativeFlag = (byte)((result & 0x80) >> 7);
-         registers.Z_ZeroFlag = (byte)result == 0 ? 1 : 0;
+         registers.N_NegativeFlag = 0;
+         registers.C_CarryFlag = (byte)(operationValue & 0x01);
+         registers.Z_ZeroFlag = (byte)result == 0x00 ? 1 : 0;
+
+         addressingMode.SetValue(memory, registers, operationAddress, (byte)result);
 
          return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
       }
 
       public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         if (opCodeDefinition.AddressingMode == AddressingMode.IMM)
+         if (opCodeDefinition.AddressingMode == AddressingMode.IMM || opCodeDefinition.AddressingMode == AddressingMode.ACC)
          {
             return string.Empty;
          }

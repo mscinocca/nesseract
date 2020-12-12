@@ -9,6 +9,7 @@ namespace NESseract.Core.Cpu
    {
       private IOperation adcOperation;
       private IOperation andOperation;
+      private IOperation aslOperation;
       private IOperation bccOperation;
       private IOperation bcsOperation;
       private IOperation beqOperation;
@@ -37,12 +38,16 @@ namespace NESseract.Core.Cpu
       private IOperation ldaOperation;
       private IOperation ldxOperation;
       private IOperation ldyOperation;
+      private IOperation lsrOperation;
       private IOperation nopOperation;
       private IOperation oraOperation;
       private IOperation phaOperation;
       private IOperation phpOperation;
       private IOperation plaOperation;
       private IOperation plpOperation;
+      private IOperation rolOperation;
+      private IOperation rorOperation;
+      private IOperation rtiOperation;
       private IOperation rtsOperation;
       private IOperation sbcOperation;
       private IOperation secOperation;
@@ -77,6 +82,7 @@ namespace NESseract.Core.Cpu
       {
          adcOperation = new ADCOperation();
          andOperation = new ANDOperation();
+         aslOperation = new ASLOperation();
          bccOperation = new BCCOperation();
          bcsOperation = new BCSOperation();
          beqOperation = new BEQOperation();
@@ -105,12 +111,16 @@ namespace NESseract.Core.Cpu
          ldaOperation = new LDAOperation();
          ldxOperation = new LDXOperation();
          ldyOperation = new LDYOperation();
+         lsrOperation = new LSROperation();
          nopOperation = new NOPOperation();
          oraOperation = new ORAOperation();
          phaOperation = new PHAOperation();
          phpOperation = new PHPOperation();
          plaOperation = new PLAOperation();
          plpOperation = new PLPOperation();
+         rolOperation = new ROLOperation();
+         rorOperation = new ROROperation();
+         rtiOperation = new RTIOperation();
          rtsOperation = new RTSOperation();
          sbcOperation = new SBCOperation();
          secOperation = new SECOperation();
@@ -150,7 +160,7 @@ namespace NESseract.Core.Cpu
                {
                   OpCode.ADC => adcOperation,
                   OpCode.AND => andOperation,
-                  //OpCode.ASL => throw new NotImplementedException(),
+                  OpCode.ASL => aslOperation,
                   OpCode.BCC => bccOperation,
                   OpCode.BCS => bcsOperation,
                   OpCode.BEQ => beqOperation,
@@ -180,16 +190,16 @@ namespace NESseract.Core.Cpu
                   OpCode.LDA => ldaOperation,
                   OpCode.LDX => ldxOperation,
                   OpCode.LDY => ldyOperation,
-                  //OpCode.LSR => throw new NotImplementedException(),
+                  OpCode.LSR => lsrOperation,
                   OpCode.NOP => nopOperation,
                   OpCode.ORA => oraOperation,
                   OpCode.PHA => phaOperation,
                   OpCode.PHP => phpOperation,
                   OpCode.PLA => plaOperation,
                   OpCode.PLP => plpOperation,
-                  //OpCode.ROL => throw new NotImplementedException(),
-                  //OpCode.ROR => throw new NotImplementedException(),
-                  //OpCode.RTI => throw new NotImplementedException(),
+                  OpCode.ROL => rolOperation,
+                  OpCode.ROR => rorOperation,
+                  OpCode.RTI => rtiOperation,
                   OpCode.RTS => rtsOperation,
                   OpCode.SBC => sbcOperation,
                   OpCode.SEC => secOperation,

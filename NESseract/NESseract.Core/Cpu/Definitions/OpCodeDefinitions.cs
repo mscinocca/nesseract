@@ -215,7 +215,7 @@ namespace NESseract.Core.Cpu.Definitions
 
             // STX
             new OpCodeDefinition(0x86, OpCode.STX, AddressingMode.ZP0, 2, 3, false, ""),
-            new OpCodeDefinition(0x96, OpCode.STX, AddressingMode.ZPX, 2, 4, false, ""),
+            new OpCodeDefinition(0x96, OpCode.STX, AddressingMode.ZPY, 2, 4, false, ""),
             new OpCodeDefinition(0x8E, OpCode.STX, AddressingMode.ABS, 3, 4, false, ""),
 
             // STY

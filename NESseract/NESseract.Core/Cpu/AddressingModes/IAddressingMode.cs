@@ -8,6 +8,6 @@
 
       void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value);
 
-      string GetSyntax(CPURegisters registers, byte operand1, byte operand2);
+      string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2);
    }
 }

@@ -20,9 +20,11 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       [TestMethod]
       public void GetSyntaxTest()
       {
-         var syntax = addressingMode.GetSyntax(cpuRegisters, 0x32, 0x40);
+         cpuRegisters.Y = 0x60;
 
-         Assert.AreEqual("$32,Y", syntax);
+         var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
+
+         Assert.AreEqual("$32,Y @ 92", syntax);
       }
    }
 }

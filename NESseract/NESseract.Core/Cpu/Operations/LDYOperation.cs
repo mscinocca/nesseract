@@ -12,7 +12,7 @@ namespace NESseract.Core.Cpu.Operations
          var result = operationValue;
 
          registers.N_NegativeFlag = (byte)((result & 0x80) >> 7);
-         registers.Z_ZeroFlag = (byte)result == 0 ? 1 : 0;
+         registers.Z_ZeroFlag = result == 0 ? 1 : 0;
 
          registers.Y = result;
 
