@@ -19,9 +19,9 @@ namespace NESseract.Core.Cpu
          return executionCycles;
       }
 
-      public string GetLog(CPUTickState cpuTickState)
-      {
-         return $"{cpuTickState.PC:X04}  {cpuTickState.OpCode:X02} {(OpCodeDefinition.InstructionBytes >= 2 ? cpuTickState.Operand1 : @"  "):X02} {(OpCodeDefinition.InstructionBytes == 3 ? cpuTickState.Operand2 : @"  "):X02}  {cpuTickState.NemonicSyntax,-27} A:{cpuTickState.A:X02} X:{cpuTickState.X:X02} Y:{cpuTickState.Y:X02} P:{cpuTickState.P:X02} SP:{cpuTickState.SP:X02} PPU:{"0",3},{"0",3} CYC:{cpuTickState.CYC}";
-      }
+      //public string GetLog(CPUTickState cpuTickState)
+      //{
+      //   return $"{cpuTickState.PC:X04}  {cpuTickState.OpCode:X02} {(OpCodeDefinition.InstructionBytes >= 2 ? cpuTickState.Operand1 : @"  "):X02} {(OpCodeDefinition.InstructionBytes == 3 ? cpuTickState.Operand2 : @"  "):X02}  {cpuTickState.NemonicSyntax,-27} A:{cpuTickState.A:X02} X:{cpuTickState.X:X02} Y:{cpuTickState.Y:X02} P:{cpuTickState.P:X02} SP:{cpuTickState.SP:X02} PPU:{"0",3},{"0",3} CYC:{cpuTickState.CYC}";
+      //}
    }
 }

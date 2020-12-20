@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NESseract.Core.Cpu.Definitions;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace NESseract.Core.Test.Cpu
@@ -15,7 +17,7 @@ namespace NESseract.Core.Test.Cpu
       }
 
       [TestMethod]
-      public unsafe void ROMTest()
+      public void ROMTest()
       {
          var rom = Resource.nestest;
          var romMemory = new Span<byte>(Resource.nestest);
@@ -46,30 +48,45 @@ namespace NESseract.Core.Test.Cpu
       }
 
       [TestMethod]
-      public unsafe void CPUTest()
+      public void CPUTest()
       {
          var rom = Resource.nestest;
 
          var romLog = new ROMLog();
          romLog.Parse(Resource.nestestlog);
 
-         var cpu = new Core.Cpu.CPU();
+         var cpu = new Core.Cpu.CPU
+         {
+            LoggingModeEnabled = true,
+         };
+
          cpu.LoadROM(rom);
 
-         for (var i = 0; i < 5003; i++)
-         {
-            var cpuTickState = cpu.Tick();
+         var testLimit = 5003;
 
-            Assert.AreEqual(romLog.ROMLogLines[i].PC, cpuTickState.PC);
-            Assert.AreEqual(romLog.ROMLogLines[i].OpCode, cpuTickState.OpCode);
-            Assert.AreEqual(romLog.ROMLogLines[i].Operand1, cpuTickState.Operand1);
-            Assert.AreEqual(romLog.ROMLogLines[i].Operand2, cpuTickState.Operand2);
-            Assert.AreEqual(romLog.ROMLogLines[i].NemonicSyntax, cpuTickState.NemonicSyntax);
-            Assert.AreEqual(romLog.ROMLogLines[i].A, cpuTickState.A);
-            Assert.AreEqual(romLog.ROMLogLines[i].X, cpuTickState.X);
-            Assert.AreEqual(romLog.ROMLogLines[i].Y, cpuTickState.Y);
-            Assert.AreEqual(romLog.ROMLogLines[i].P, cpuTickState.P);
-            Assert.AreEqual(romLog.ROMLogLines[i].CYC, cpuTickState.CYC);
+         var cpuTickStates = new List<Core.Cpu.CPUTickState>();
+
+         for (var i = 0; i < testLimit; i++)
+         {
+            cpu.Tick();
+
+            cpuTickStates.Add(cpu.CPUTickState);
+         }
+
+         for (var i = 0; i < testLimit; i++)
+         {
+            Debug.WriteLine(cpuTickStates[i].Log);
+
+            Assert.AreEqual(romLog.ROMLogLines[i].PC, cpuTickStates[i].PC);
+            Assert.AreEqual(romLog.ROMLogLines[i].OpCode, cpuTickStates[i].OpCode);
+            Assert.AreEqual(romLog.ROMLogLines[i].Operand1, cpuTickStates[i].Operand1);
+            Assert.AreEqual(romLog.ROMLogLines[i].Operand2, cpuTickStates[i].Operand2);
+            Assert.AreEqual(romLog.ROMLogLines[i].NemonicSyntax, cpuTickStates[i].NemonicSyntax);
+            Assert.AreEqual(romLog.ROMLogLines[i].A, cpuTickStates[i].A);
+            Assert.AreEqual(romLog.ROMLogLines[i].X, cpuTickStates[i].X);
+            Assert.AreEqual(romLog.ROMLogLines[i].Y, cpuTickStates[i].Y);
+            Assert.AreEqual(romLog.ROMLogLines[i].P, cpuTickStates[i].P);
+            Assert.AreEqual(romLog.ROMLogLines[i].CYC, cpuTickStates[i].CYC);
          }
       }
    }

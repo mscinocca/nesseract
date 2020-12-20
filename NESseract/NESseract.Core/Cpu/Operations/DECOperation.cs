@@ -8,7 +8,7 @@ namespace NESseract.Core.Cpu.Operations
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          var operationAddress = addressingMode.GetAddress(memory, registers, operand1, operand2, out _);
-         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+         var operationValue = addressingMode.GetValue(memory, registers, operationAddress);
 
          var result = operationValue - 1;
 

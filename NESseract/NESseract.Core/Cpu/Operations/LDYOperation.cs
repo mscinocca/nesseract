@@ -9,12 +9,10 @@ namespace NESseract.Core.Cpu.Operations
       {
          var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
 
-         var result = operationValue;
+         registers.N_NegativeFlag = (byte)((operationValue & 0x80) >> 7);
+         registers.Z_ZeroFlag = operationValue == 0 ? 1 : 0;
 
-         registers.N_NegativeFlag = (byte)((result & 0x80) >> 7);
-         registers.Z_ZeroFlag = result == 0 ? 1 : 0;
-
-         registers.Y = result;
+         registers.Y = operationValue;
 
          return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
       }

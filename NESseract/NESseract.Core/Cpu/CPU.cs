@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace NESseract.Core.Cpu
 {
@@ -15,9 +14,11 @@ namespace NESseract.Core.Cpu
 
       private byte[] Rom;
 
-      private byte CurrentOpCode;
-
       private ushort Counter;
+
+      public bool LoggingModeEnabled { get; set; }
+
+      public CPUTickState CPUTickState { get; private set; }
 
       public CPU()
       {
@@ -77,13 +78,13 @@ namespace NESseract.Core.Cpu
          Registers.PC = 0xC000;
       }
 
-      public CPUTickState Tick()
+      public void Tick()
       {
          var registerPC = Registers.PC;
 
-         CurrentOpCode = Memory.Memory[Registers.PC++];
+         var opCode = Memory.Memory[Registers.PC++];
 
-         var opCodeHandler = OpCodeHandlers[CurrentOpCode];
+         var opCodeHandler = OpCodeHandlers[opCode];
 
          byte operand1 = 0;
          byte operand2 = 0;
@@ -98,30 +99,30 @@ namespace NESseract.Core.Cpu
             operand2 = Memory.Memory[Registers.PC++];
          }
 
-         var cpuTickState = new CPUTickState
+         if (LoggingModeEnabled)
          {
-            PC = registerPC,
-            OpCode = CurrentOpCode,
-            Operand1 = operand1,
-            Operand2 = operand2,
-            NemonicSyntax = $"{opCodeHandler.OpCodeDefinition.Nemonic} {(opCodeHandler.AddressingMode.GetSyntax(Memory, Registers, operand1, operand2) + " " + opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2))}".Trim(),
-            A = Registers.A,
-            X = Registers.X,
-            Y = Registers.Y,
-            P = Registers.PS,
-            SP = Registers.SP,
-            CYC = Counter,
-         };
-
-         var log = opCodeHandler.GetLog(cpuTickState);
-
-         Debug.WriteLine(log);
+            CPUTickState = new CPUTickState
+            {
+               PC = registerPC,
+               OpCode = opCode,
+               Operand1 = operand1,
+               Operand2 = operand2,
+               InstructionBytes = opCodeHandler.OpCodeDefinition.InstructionBytes,
+               Nemonic = opCodeHandler.OpCodeDefinition.Nemonic,
+               AddressSyntax = opCodeHandler.AddressingMode.GetSyntax(Memory, Registers, operand1, operand2),
+               OperationSyntax = opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2),
+               A = Registers.A,
+               X = Registers.X,
+               Y = Registers.Y,
+               P = Registers.PS,
+               SP = Registers.SP,
+               CYC = Counter,
+            };
+         }
 
          var cycles = opCodeHandler.Execute(Memory, Registers, operand1, operand2);
 
          Counter += cycles;
-
-         return cpuTickState;
       }
    }
 }

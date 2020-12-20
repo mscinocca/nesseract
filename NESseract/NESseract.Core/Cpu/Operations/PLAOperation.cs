@@ -9,12 +9,10 @@ namespace NESseract.Core.Cpu.Operations
       {
          var operationValue = memory.Stack.Span[++registers.SP];
 
-         var result = operationValue;
+         registers.N_NegativeFlag = (byte)((operationValue & 0x80) >> 7);
+         registers.Z_ZeroFlag = operationValue == 0 ? 1 : 0;
 
-         registers.N_NegativeFlag = (byte)((result & 0x80) >> 7);
-         registers.Z_ZeroFlag = result == 0 ? 1 : 0;
-
-         registers.A = result;
+         registers.A = operationValue;
 
          return opCodeDefinition.ExecutionCycles;
       }

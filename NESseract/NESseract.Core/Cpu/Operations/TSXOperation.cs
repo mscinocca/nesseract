@@ -7,12 +7,10 @@ namespace NESseract.Core.Cpu.Operations
    {
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var result = registers.SP;
+         registers.N_NegativeFlag = (byte)((registers.SP & 0x80) >> 7);
+         registers.Z_ZeroFlag = registers.SP == 0 ? 1 : 0;
 
-         registers.N_NegativeFlag = (byte)((result & 0x80) >> 7);
-         registers.Z_ZeroFlag = result == 0 ? 1 : 0;
-
-         registers.X = result;
+         registers.X = registers.SP;
 
          return opCodeDefinition.ExecutionCycles;
       }

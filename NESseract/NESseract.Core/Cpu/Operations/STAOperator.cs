@@ -7,9 +7,7 @@ namespace NESseract.Core.Cpu.Operations
    {
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
-         var operationAddress = addressingMode.GetAddress(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
-
-         addressingMode.SetValue(memory, registers, operationAddress, registers.A);
+         addressingMode.SetValue(memory, registers, operand1, operand2, registers.A, out bool pageBoundaryCrossed);
 
          return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
       }

@@ -1,6 +1,6 @@
 ﻿namespace NESseract.Core.Cpu.Definitions
 {
-   public class OpCodeDefinition
+   public struct OpCodeDefinition
    {
       public byte OpCode;
 
