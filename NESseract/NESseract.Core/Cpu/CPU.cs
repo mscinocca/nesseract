@@ -111,6 +111,7 @@ namespace NESseract.Core.Cpu
                Nemonic = opCodeHandler.OpCodeDefinition.Nemonic,
                AddressSyntax = opCodeHandler.AddressingMode.GetSyntax(Memory, Registers, operand1, operand2),
                OperationSyntax = opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2),
+               IllegalOpCode = opCodeHandler.OpCodeDefinition.IllegalOpCode,
                A = Registers.A,
                X = Registers.X,
                Y = Registers.Y,

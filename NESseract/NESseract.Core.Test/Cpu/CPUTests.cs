@@ -62,7 +62,7 @@ namespace NESseract.Core.Test.Cpu
 
          cpu.LoadROM(rom);
 
-         var testLimit = 5003;
+         var testLimit = 5259;
 
          var cpuTickStates = new List<Core.Cpu.CPUTickState>();
 

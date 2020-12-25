@@ -222,6 +222,48 @@ namespace NESseract.Core.Cpu.Definitions
             new OpCodeDefinition(0x84, OpCode.STY, AddressingMode.ZP0, 2, 3, false, ""),
             new OpCodeDefinition(0x94, OpCode.STY, AddressingMode.ZPX, 2, 4, false, ""),
             new OpCodeDefinition(0x8C, OpCode.STY, AddressingMode.ABS, 3, 4, false, ""),
+         
+            //== Illegal ==//
+
+            // NOP
+            new OpCodeDefinition(0x80, OpCode.NOP, AddressingMode.IMM, 2, 2, false, "", true),
+            new OpCodeDefinition(0x82, OpCode.NOP, AddressingMode.IMM, 2, 2, false, "", true),
+            new OpCodeDefinition(0xC2, OpCode.NOP, AddressingMode.IMM, 2, 2, false, "", true),
+            new OpCodeDefinition(0xE2, OpCode.NOP, AddressingMode.IMM, 2, 2, false, "", true),
+            new OpCodeDefinition(0x04, OpCode.NOP, AddressingMode.ZP0, 2, 3, false, "", true),
+            new OpCodeDefinition(0x14, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0x34, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0x44, OpCode.NOP, AddressingMode.ZP0, 2, 3, false, "", true),
+            new OpCodeDefinition(0x54, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0x64, OpCode.NOP, AddressingMode.ZP0, 2, 3, false, "", true),
+            new OpCodeDefinition(0x74, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0xD4, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0xF4, OpCode.NOP, AddressingMode.ZPX, 2, 4, false, "", true),
+            new OpCodeDefinition(0x89, OpCode.NOP, AddressingMode.IMM, 2, 2, false, "", true),
+            new OpCodeDefinition(0x1A, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0x3A, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0x5A, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0x7A, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0xDA, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0xFA, OpCode.NOP, AddressingMode.NON, 1, 2, false, "", true),
+            new OpCodeDefinition(0x0C, OpCode.NOP, AddressingMode.ABS, 3, 4, false, "", true),
+            new OpCodeDefinition(0x1C, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+            new OpCodeDefinition(0x3C, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+            new OpCodeDefinition(0x5C, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+            new OpCodeDefinition(0x7C, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+            new OpCodeDefinition(0xDC, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+            new OpCodeDefinition(0xFC, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
+
+            // LAX
+            new OpCodeDefinition(0xA3, OpCode.LAX, AddressingMode.IDX, 2, 6, false, "NZ"),
+            new OpCodeDefinition(0xB3, OpCode.LAX, AddressingMode.IDY, 2, 5, true,  "NZ"),
+            new OpCodeDefinition(0xA7, OpCode.LAX, AddressingMode.ZP0, 2, 3, false, "NZ"),
+            new OpCodeDefinition(0xB7, OpCode.LAX, AddressingMode.ZPY, 2, 4, false, "NZ"),
+            new OpCodeDefinition(0xAB, OpCode.LAX, AddressingMode.IMM, 2, 2, false, "NZ"),
+            new OpCodeDefinition(0xAF, OpCode.LAX, AddressingMode.ABS, 3, 4, false, "NZ"),
+            new OpCodeDefinition(0xBF, OpCode.LAX, AddressingMode.ABY, 3, 4, true,  "NZ"),
+
+            //== Illegal ==//
          };
       }
    }

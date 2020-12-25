@@ -21,7 +21,7 @@ namespace NESseract.Core.Test.Cpu
                OpCode = byte.Parse(logLine.Substring(6, 3).Trim(), NumberStyles.HexNumber),
                Operand1 = byte.Parse(string.IsNullOrEmpty(logLine.Substring(9, 3).Trim()) ? "0" : logLine.Substring(9, 3).Trim(), NumberStyles.HexNumber),
                Operand2 = byte.Parse(string.IsNullOrEmpty(logLine.Substring(12, 3).Trim()) ? "0" : logLine.Substring(12, 3).Trim(), NumberStyles.HexNumber),
-               NemonicSyntax = logLine.Substring(16, 32).Trim(),
+               NemonicSyntax = logLine.Substring(15, 33).Trim(),
                A = byte.Parse(logLine.Substring(50, 3).Trim(), NumberStyles.HexNumber),
                X = byte.Parse(logLine.Substring(55, 3).Trim(), NumberStyles.HexNumber),
                Y = byte.Parse(logLine.Substring(60, 3).Trim(), NumberStyles.HexNumber),

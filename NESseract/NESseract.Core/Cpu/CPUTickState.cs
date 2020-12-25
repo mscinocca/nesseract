@@ -10,6 +10,7 @@
       public OpCode Nemonic { get; set; }
       public string AddressSyntax { get; set; }
       public string OperationSyntax { get; set; }
+      public bool IllegalOpCode { get; set; }
       public byte A { get; set; }
       public byte X { get; set; }
       public byte Y { get; set; }
@@ -21,7 +22,7 @@
 
       public string NemonicSyntax
       {
-         get { return string.IsNullOrEmpty(nemonixSyntax) ? $"{Nemonic} {AddressSyntax + " " + OperationSyntax}".Trim() : nemonixSyntax; }
+         get { return string.IsNullOrEmpty(nemonixSyntax) ? $"{(IllegalOpCode ? "*" : "")}{Nemonic} {AddressSyntax + " " + OperationSyntax}".Trim() : nemonixSyntax; }
          set { nemonixSyntax = value; }
       }
 

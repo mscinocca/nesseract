@@ -16,6 +16,8 @@
 
       public string AffectedFlags;
 
+      public bool IllegalOpCode;
+
       public OpCodeDefinition(
          byte opCode,
          OpCode nemonic,
@@ -23,7 +25,8 @@
          byte instructionBytes,
          byte executionCycles,
          bool addExecutionCycleOnPageBoundaryCross,
-         string affectedFlags)
+         string affectedFlags,
+         bool illegalOpCode = false)
       {
          OpCode = opCode;
          Nemonic = nemonic;
@@ -32,6 +35,7 @@
          ExecutionCycles = executionCycles;
          AddExecutionCycleOnPageBoundaryCross = addExecutionCycleOnPageBoundaryCross;
          AffectedFlags = affectedFlags;
+         IllegalOpCode = illegalOpCode;
       }
    }
 }

@@ -35,6 +35,7 @@ namespace NESseract.Core.Cpu
       private IOperation inyOperation;
       private IOperation jmpOperation;
       private IOperation jsrOperation;
+      private IOperation laxOperation;
       private IOperation ldaOperation;
       private IOperation ldxOperation;
       private IOperation ldyOperation;
@@ -108,6 +109,7 @@ namespace NESseract.Core.Cpu
          inyOperation = new INYOperation();
          jmpOperation = new JMPOperation();
          jsrOperation = new JSROperation();
+         laxOperation = new LAXOperation();
          ldaOperation = new LDAOperation();
          ldxOperation = new LDXOperation();
          ldyOperation = new LDYOperation();
@@ -214,7 +216,9 @@ namespace NESseract.Core.Cpu
                   OpCode.TXA => txaOperation,
                   OpCode.TXS => txsOperation,
                   OpCode.TYA => tyaOperation,
-                  //_ => throw new NotImplementedException(),
+                  
+                  OpCode.LAX => laxOperation,
+
                   _ => nopOperation,
                },
                AddressingMode = x.AddressingMode switch
