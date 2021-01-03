@@ -9,7 +9,7 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       [TestMethod]
       public void GetValueTest()
       {
-         cpuMemory.Memory[0x32] = 0x35;
+         cpuMemory[0x32] = 0x35;
 
          var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x32, 0x40, out _);
 

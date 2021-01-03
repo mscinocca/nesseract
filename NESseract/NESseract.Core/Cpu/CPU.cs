@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NESseract.Core.Bus;
+using System;
 using System.Collections.Generic;
 
 namespace NESseract.Core.Cpu
@@ -7,12 +8,10 @@ namespace NESseract.Core.Cpu
    {
       public byte Accumulator;
 
-      public readonly CPURegisters Registers;
       public readonly CPUMemory Memory;
+      public readonly CPURegisters Registers;
 
       public readonly Dictionary<byte, OpCodeHandler> OpCodeHandlers;
-
-      private byte[] Rom;
 
       private ushort Counter;
 
@@ -22,14 +21,12 @@ namespace NESseract.Core.Cpu
 
       public CPU()
       {
-         Registers = new CPURegisters();
          Memory = new CPUMemory();
+         Registers = new CPURegisters();
 
          OpCodeHandlers = new Dictionary<byte, OpCodeHandler>();
 
          InitializeOpCodeHandlers();
-
-         PowerUp();
       }
 
       public void PowerUp()
@@ -43,17 +40,17 @@ namespace NESseract.Core.Cpu
 
          Registers.SP = 0xFD;
 
-         Memory.Memory[0x4017] = 0x00;
-         Memory.Memory[0x4015] = 0x00;
+         Memory[0x4017] = 0x00;
+         Memory[0x4015] = 0x00;
 
-         for (var i = 0x4000; i <= 0x400F; i++)
+         for (ushort i = 0x4000; i <= 0x400F; i++)
          {
-            Memory.Memory[i] = 0x00;
+            Memory[i] = 0x00;
          }
 
-         for (var i = 0x4010; i <= 0x4013; i++)
+         for (ushort i = 0x4010; i <= 0x4013; i++)
          {
-            Memory.Memory[i] = 0x00;
+            Memory[i] = 0x00;
          }
 
          Counter = 7;
@@ -65,15 +62,13 @@ namespace NESseract.Core.Cpu
 
          Registers.I_InterruptDisable = 1;
 
-         Memory.Memory[0x4015] = 0x00;
+         Memory[0x4015] = 0x00;
       }
       
       public void LoadROM(byte[] rom)
       {
-         Rom = rom;
-
-         Array.Copy(Rom, 16, Memory.Memory, 0x8000, 0x4000);
-         Array.Copy(Rom, 16, Memory.Memory, 0xC000, 0x4000);
+         Memory.SetBlock(rom, 16, 0x8000, 0x4000);
+         Memory.SetBlock(rom, 16, 0xC000, 0x4000);
 
          Registers.PC = 0xC000;
       }
@@ -82,7 +77,7 @@ namespace NESseract.Core.Cpu
       {
          var registerPC = Registers.PC;
 
-         var opCode = Memory.Memory[Registers.PC++];
+         var opCode = Memory[Registers.PC++];
 
          var opCodeHandler = OpCodeHandlers[opCode];
 
@@ -91,12 +86,12 @@ namespace NESseract.Core.Cpu
 
          if (opCodeHandler.OpCodeDefinition.InstructionBytes >= 2)
          {
-            operand1 = Memory.Memory[Registers.PC++];
+            operand1 = Memory[Registers.PC++];
          }
 
          if (opCodeHandler.OpCodeDefinition.InstructionBytes == 3)
          {
-            operand2 = Memory.Memory[Registers.PC++];
+            operand2 = Memory[Registers.PC++];
          }
 
          if (LoggingModeEnabled)

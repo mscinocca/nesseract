@@ -1,9 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NESseract.Core.Bus;
 using NESseract.Core.Cpu.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Linq;
 
 namespace NESseract.Core.Test.Cpu
 {
@@ -13,7 +15,7 @@ namespace NESseract.Core.Test.Cpu
       [TestMethod]
       public void CPUOpCodeHandlerCountTest()
       {
-         Assert.AreEqual(151, OpCodeDefinitions.OpCodeList.Count);
+         Assert.AreEqual(151, OpCodeDefinitions.OpCodeList.Count(x => !x.IllegalOpCode));
       }
 
       [TestMethod]
@@ -59,6 +61,8 @@ namespace NESseract.Core.Test.Cpu
          {
             LoggingModeEnabled = true,
          };
+
+         cpu.PowerUp();
 
          cpu.LoadROM(rom);
 

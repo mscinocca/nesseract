@@ -255,13 +255,13 @@ namespace NESseract.Core.Cpu.Definitions
             new OpCodeDefinition(0xFC, OpCode.NOP, AddressingMode.ABX, 3, 4, true,  "", true),
 
             // LAX
-            new OpCodeDefinition(0xA3, OpCode.LAX, AddressingMode.IDX, 2, 6, false, "NZ"),
-            new OpCodeDefinition(0xB3, OpCode.LAX, AddressingMode.IDY, 2, 5, true,  "NZ"),
-            new OpCodeDefinition(0xA7, OpCode.LAX, AddressingMode.ZP0, 2, 3, false, "NZ"),
-            new OpCodeDefinition(0xB7, OpCode.LAX, AddressingMode.ZPY, 2, 4, false, "NZ"),
-            new OpCodeDefinition(0xAB, OpCode.LAX, AddressingMode.IMM, 2, 2, false, "NZ"),
-            new OpCodeDefinition(0xAF, OpCode.LAX, AddressingMode.ABS, 3, 4, false, "NZ"),
-            new OpCodeDefinition(0xBF, OpCode.LAX, AddressingMode.ABY, 3, 4, true,  "NZ"),
+            new OpCodeDefinition(0xA3, OpCode.LAX, AddressingMode.IDX, 2, 6, false, "NZ", true),
+            new OpCodeDefinition(0xB3, OpCode.LAX, AddressingMode.IDY, 2, 5, true,  "NZ", true),
+            new OpCodeDefinition(0xA7, OpCode.LAX, AddressingMode.ZP0, 2, 3, false, "NZ", true),
+            new OpCodeDefinition(0xB7, OpCode.LAX, AddressingMode.ZPY, 2, 4, false, "NZ", true),
+            new OpCodeDefinition(0xAB, OpCode.LAX, AddressingMode.IMM, 2, 2, false, "NZ", true),
+            new OpCodeDefinition(0xAF, OpCode.LAX, AddressingMode.ABS, 3, 4, false, "NZ", true),
+            new OpCodeDefinition(0xBF, OpCode.LAX, AddressingMode.ABY, 3, 4, true,  "NZ", true),
 
             //== Illegal ==//
          };

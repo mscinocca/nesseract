@@ -1,4 +1,5 @@
-﻿using NESseract.Core.Cpu;
+﻿using NESseract.Core.Bus;
+using NESseract.Core.Cpu;
 using NESseract.Core.Cpu.AddressingModes;
 using NESseract.Core.Cpu.Operations;
 
@@ -46,6 +47,5 @@ namespace NESseract.Core.Test.Cpu.Operations
          cpuMemory = new CPUMemory();
          cpuRegisters = new CPURegisters();
       }
-
    }
 }

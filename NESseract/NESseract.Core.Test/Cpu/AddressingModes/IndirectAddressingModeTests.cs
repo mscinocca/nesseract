@@ -7,10 +7,10 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
    public class IndirectAddressingModeTests : BaseAddressingModeTests<IndirectAddressingMode>
    {
       [TestMethod]
-      public void GetValueTest()
+      public unsafe void GetValueTest()
       {
-         cpuMemory.Memory[0x1000] = 0x52;
-         cpuMemory.Memory[0x1001] = 0x3A;
+         cpuMemory[0x1000] = 0x52;
+         cpuMemory[0x1001] = 0x3A;
 
          var @value = addressingMode.GetAddress(cpuMemory, cpuRegisters, 0x00, 0x10, out _);
 
@@ -20,11 +20,11 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       [TestMethod]
       public void GetValueWrapAroundTest()
       {
-         cpuMemory.Memory[0x3000] = 0x40;
-         cpuMemory.Memory[0x30FF] = 0x80;
-         cpuMemory.Memory[0x3100] = 0x50;
+         cpuMemory[0x4000] = 0x40;
+         cpuMemory[0x40FF] = 0x80;
+         cpuMemory[0x4100] = 0x50;
 
-         var @value = addressingMode.GetAddress(cpuMemory, cpuRegisters, 0xFF, 0x30, out _);
+         var @value = addressingMode.GetAddress(cpuMemory, cpuRegisters, 0xFF, 0x40, out _);
 
          Assert.AreEqual(0x4080, value);
       }
@@ -32,8 +32,8 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       [TestMethod]
       public void GetSyntaxTest()
       {
-         cpuMemory.Memory[0x1000] = 0x52;
-         cpuMemory.Memory[0x1001] = 0x3A;
+         cpuMemory[0x1000] = 0x52;
+         cpuMemory[0x1001] = 0x3A;
 
          var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x00, 0x10);
 

@@ -1,4 +1,5 @@
-﻿using NESseract.Core.Cpu;
+﻿using NESseract.Core.Bus;
+using NESseract.Core.Cpu;
 using NESseract.Core.Cpu.AddressingModes;
 
 namespace NESseract.Core.Test.Cpu.AddressingModes

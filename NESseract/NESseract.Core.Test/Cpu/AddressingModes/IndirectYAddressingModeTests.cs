@@ -11,10 +11,10 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       {
          cpuRegisters.Y = 0x10;
 
-         cpuMemory.Memory[0x86] = 0x28;
-         cpuMemory.Memory[0x87] = 0x40;
+         cpuMemory[0x86] = 0x28;
+         cpuMemory[0x87] = 0x40;
 
-         cpuMemory.Memory[0x4038] = 0x45;
+         cpuMemory[0x4038] = 0x45;
 
          var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x86, 0x00, out _);
 
@@ -26,10 +26,10 @@ namespace NESseract.Core.Test.Cpu.AddressingModes
       {
          cpuRegisters.Y = 0x10;
 
-         cpuMemory.Memory[0x86] = 0x28;
-         cpuMemory.Memory[0x87] = 0x40;
+         cpuMemory[0x86] = 0x28;
+         cpuMemory[0x87] = 0x40;
 
-         cpuMemory.Memory[0x4038] = 0x45;
+         cpuMemory[0x4038] = 0x45;
 
          var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x86, 0x00);
 

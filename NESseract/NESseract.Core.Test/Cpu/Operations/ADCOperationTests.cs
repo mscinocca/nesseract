@@ -28,7 +28,7 @@ namespace NESseract.Core.Test.Cpu.Operations
 
          cpuRegisters.A = 0x30;
 
-         cpuMemory.Memory[0x45] = 0x32;
+         cpuMemory[0x45] = 0x32;
 
          operation.Execute(opCodeDefinition, zeroPageAddressingMode, cpuMemory, cpuRegisters, 0x45, 0x00);
 
