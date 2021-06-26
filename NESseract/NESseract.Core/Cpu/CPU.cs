@@ -1,6 +1,4 @@
-﻿using NESseract.Core.Bus;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NESseract.Core.Cpu
 {

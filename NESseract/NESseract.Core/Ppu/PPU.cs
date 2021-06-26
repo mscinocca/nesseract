@@ -1,5 +1,4 @@
-﻿using NESseract.Core.Bus;
-using NESseract.Core.Cpu;
+﻿using NESseract.Core.Cpu;
 
 namespace NESseract.Core.Ppu
 {

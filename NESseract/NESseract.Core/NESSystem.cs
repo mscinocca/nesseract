@@ -14,6 +14,16 @@ namespace NESseract.Core
          PPU = new PPU(CPU.Memory);
       }
 
+      public void PowerUp()
+      {
+         CPU.PowerUp();
+      }
+
+      public void Reset()
+      {
+         CPU.Reset();
+      }
+
       public void LoadROM(byte[] rom)
       {
          CPU.LoadROM(rom);
