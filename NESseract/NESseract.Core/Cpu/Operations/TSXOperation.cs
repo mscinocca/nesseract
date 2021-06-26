@@ -8,7 +8,7 @@ namespace NESseract.Core.Cpu.Operations
       public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
       {
          registers.N_NegativeFlag = (byte)((registers.SP & 0x80) >> 7);
-         registers.Z_ZeroFlag = registers.SP == 0 ? 1 : 0;
+         registers.Z_ZeroFlag = (byte)(registers.SP == 0 ? 1 : 0);
 
          registers.X = registers.SP;
 

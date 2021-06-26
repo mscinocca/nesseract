@@ -9,7 +9,7 @@ namespace NESseract.Core.Cpu.Operations
       {
          var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out bool pageBoundaryCrossed);
 
-         registers.Z_ZeroFlag = (byte)(operationValue & registers.A) == 0 ? 1 : 0;
+         registers.Z_ZeroFlag = (byte)((byte)(operationValue & registers.A) == 0 ? 1 : 0);
 
          registers.N_NegativeFlag = (byte)(operationValue >> 7 & 0x01);
          registers.V_OverflowFlag = (byte)(operationValue >> 6 & 0x01);
