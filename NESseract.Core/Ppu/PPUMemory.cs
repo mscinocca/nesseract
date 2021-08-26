@@ -1,18 +1,35 @@
-﻿using System;
+﻿using NESseract.Core.Components;
+using System;
 
 namespace NESseract.Core.Ppu
 {
-   public class PPUMemory
+   public class PPUMemory : MemoryChip
    {
-      public byte[] Memory;
+      public PPUMemory() : base(0x10000) { }
 
-      public Memory<byte> MemorySpan;
-
-      public PPUMemory()
+      public override ushort DecodeAddress(ushort address)
       {
-         Memory = new byte[0x10000];
+         return address;
+      }
 
-         MemorySpan = new Memory<byte>(Memory);
+      public Memory<byte> CHRROM
+      {
+         get { return memorySpan.Slice(0x0000, 0x0100); }
+      }
+
+      public Memory<byte> VRAM
+      {
+         get { return memorySpan.Slice(0x2000, 0x1F00); }
+      }
+
+      public Memory<byte> Palettes
+      {
+         get { return memorySpan.Slice(0x3F00, 0x0100); }
+      }
+
+      public Memory<byte> Mirrors
+      {
+         get { return memorySpan.Slice(0x4000, 0xC0FF); }
       }
    }
 }

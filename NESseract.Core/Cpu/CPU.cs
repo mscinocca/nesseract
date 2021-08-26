@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NESseract.Core.Rom;
+using System.Collections.Generic;
 
 namespace NESseract.Core.Cpu
 {
@@ -63,10 +64,18 @@ namespace NESseract.Core.Cpu
          Memory[0x4015] = 0x00;
       }
       
-      public void LoadROM(byte[] rom)
+      public void LoadROM(ROM rom)
       {
-         Memory.SetBlock(rom, 16, 0x8000, 0x4000);
-         Memory.SetBlock(rom, 16, 0xC000, 0x4000);
+         Memory.SetBlock(rom.GetPRGROMBank(0), 0, 0x8000, 0x4000);
+
+         if (rom.NumberOfPRGROMBanks > 1)
+         {
+            Memory.SetBlock(rom.GetPRGROMBank(1), 0, 0xC000, 0x4000);
+         }
+         else
+         {
+            Memory.SetBlock(rom.GetPRGROMBank(0), 0, 0xC000, 0x4000);
+         }
 
          Registers.PC = 0xC000;
       }

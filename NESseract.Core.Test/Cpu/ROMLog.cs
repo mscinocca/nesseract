@@ -7,7 +7,7 @@ namespace NESseract.Core.Test.Cpu
 {
    public class ROMLog
    {
-      public readonly List<CPUTickState> ROMLogLines = new List<CPUTickState>();
+      public readonly List<CPUTickState> ROMLogLines = new();
 
       public void Parse(string log)
       {

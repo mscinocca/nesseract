@@ -1,5 +1,6 @@
 ﻿using NESseract.Core.Cpu;
 using NESseract.Core.Ppu;
+using NESseract.Core.Rom;
 
 namespace NESseract.Core
 {
@@ -7,6 +8,8 @@ namespace NESseract.Core
    {
       public readonly CPU CPU;
       public readonly PPU PPU;
+
+      public ROM LoadedROM;
 
       public NESSystem()
       {
@@ -17,16 +20,21 @@ namespace NESseract.Core
       public void PowerUp()
       {
          CPU.PowerUp();
+         PPU.PowerUp();
       }
 
       public void Reset()
       {
          CPU.Reset();
+         PPU.Reset();
       }
 
-      public void LoadROM(byte[] rom)
+      public void LoadROM(byte[] data)
       {
-         CPU.LoadROM(rom);
+         LoadedROM = new ROM(data);
+
+         CPU.LoadROM(LoadedROM);
+         PPU.LoadROM(LoadedROM);
       }
    }
 }

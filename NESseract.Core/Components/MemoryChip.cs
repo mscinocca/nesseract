@@ -65,6 +65,11 @@ namespace NESseract.Core.Components
          Array.Copy(blockData, sourceIndex, memory, destinationIndex, length);
       }
 
+      public void SetBlock(Memory<byte> blockData, int sourceIndex, int destinationIndex, int length)
+      {
+         Array.Copy(blockData.ToArray(), sourceIndex, memory, destinationIndex, length);
+      }
+
       public void RegisterMap(ushort address, Action<byte> mapAction)
       {
          address = DecodeAddress(address);
