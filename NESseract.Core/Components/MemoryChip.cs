@@ -1,85 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NESseract.Core.Components
+namespace NESseract.Core.Components;
+
+public abstract class MemoryChip
 {
-   public abstract class MemoryChip
+   private readonly byte[] _memory;
+
+   protected readonly Memory<byte> MemorySpan;
+
+   private readonly Dictionary<ushort, List<Action<byte>>> _memoryActionMap;
+
+   protected MemoryChip(int size)
    {
-      protected readonly byte[] memory;
+      _memory = new byte[size];
 
-      protected readonly Memory<byte> memorySpan;
+      MemorySpan = new Memory<byte>(_memory);
 
-      protected Dictionary<ushort, List<Action<byte>>> memoryActionMap;
+      _memoryActionMap = new Dictionary<ushort, List<Action<byte>>>();
+   }
 
-      protected MemoryChip(int size)
-      {
-         memory = new byte[size];
-
-         memorySpan = new Memory<byte>(memory);
-
-         memoryActionMap = new Dictionary<ushort, List<Action<byte>>>();
-      }
-
-      public byte this[ushort address]
-      {
-         get
-         {
-            address = DecodeAddress(address);
-
-            return memory[address];
-         }
-
-         set
-         {
-            address = DecodeAddress(address);
-
-            memory[address] = value;
-
-            if(memoryActionMap.ContainsKey(address))
-            {
-               for(var i = 0; i < memoryActionMap[address].Count; i++)
-               {
-                  memoryActionMap[address][i](value);
-               }
-            }
-         }
-      }
-
-      public byte this[int address]
-      {
-         get
-         {
-            return this[(ushort)address];
-         }
-
-         set
-         {
-            this[(ushort)address] = value;
-         }
-      }
-
-      public abstract ushort DecodeAddress(ushort address);
-
-      public void SetBlock(byte[] blockData, int sourceIndex, int destinationIndex, int length)
-      {
-         Array.Copy(blockData, sourceIndex, memory, destinationIndex, length);
-      }
-
-      public void SetBlock(Memory<byte> blockData, int sourceIndex, int destinationIndex, int length)
-      {
-         Array.Copy(blockData.ToArray(), sourceIndex, memory, destinationIndex, length);
-      }
-
-      public void RegisterMap(ushort address, Action<byte> mapAction)
+   public byte this[ushort address]
+   {
+      get
       {
          address = DecodeAddress(address);
 
-         if(!memoryActionMap.ContainsKey(address))
+         return _memory[address];
+      }
+
+      set
+      {
+         address = DecodeAddress(address);
+
+         _memory[address] = value;
+
+         if (!_memoryActionMap.ContainsKey(address))
          {
-            memoryActionMap.Add(address, new List<Action<byte>>());
+            return;
          }
 
-         memoryActionMap[address].Add(mapAction);
+         for(var i = 0; i < _memoryActionMap[address].Count; i++)
+         {
+            _memoryActionMap[address][i](value);
+         }
       }
+   }
+
+   public byte this[int address]
+   {
+      get => this[(ushort)address];
+
+      set => this[(ushort)address] = value;
+   }
+
+   protected abstract ushort DecodeAddress(ushort address);
+
+   public void SetBlock(byte[] blockData, int sourceIndex, int destinationIndex, int length)
+   {
+      Array.Copy(blockData, sourceIndex, _memory, destinationIndex, length);
+   }
+
+   public void SetBlock(Memory<byte> blockData, int sourceIndex, int destinationIndex, int length)
+   {
+      Array.Copy(blockData.ToArray(), sourceIndex, _memory, destinationIndex, length);
+   }
+
+   public void RegisterMap(ushort address, Action<byte> mapAction)
+   {
+      address = DecodeAddress(address);
+
+      if(!_memoryActionMap.ContainsKey(address))
+      {
+         _memoryActionMap.Add(address, new List<Action<byte>>());
+      }
+
+      _memoryActionMap[address].Add(mapAction);
    }
 }

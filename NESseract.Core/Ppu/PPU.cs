@@ -1,47 +1,46 @@
 ﻿using NESseract.Core.Cpu;
 using NESseract.Core.Rom;
 
-namespace NESseract.Core.Ppu
+namespace NESseract.Core.Ppu;
+
+public class PPU
 {
-   public class PPU
+   public readonly CPUMemory CPUMemory;
+
+   private readonly PPURegisters _registers;
+   private readonly PPUMemory _memory;
+
+   public PPU(CPUMemory cpuMemory)
    {
-      public readonly CPUMemory CPUMemory;
+      CPUMemory = cpuMemory;
 
-      public readonly PPURegisters Registers;
-      public readonly PPUMemory Memory;
+      _registers = new PPURegisters(cpuMemory);
+      _memory = new PPUMemory();
+   }
 
-      public PPU(CPUMemory cpuMemory)
-      {
-         CPUMemory = cpuMemory;
+   public void PowerUp()
+   {
+      _registers.PPUCTRL.Value = 0x00;
+      _registers.PPUMASK.Value = 0x00;
 
-         Registers = new PPURegisters(cpuMemory);
-         Memory = new PPUMemory();
-      }
+      _registers.PPUSTATUS.Value = 0b10100000;
+      _registers.OAMADDR.Value = 0x00;
+      _registers.PPUSCROLL.Value = 0x00;
+      _registers.PPUADDR.Value = 0x00;
+      _registers.PPUDATA.Value = 0x00;
+   }
 
-      public void PowerUp()
-      {
-         Registers.PPUCTRL.Value = 0x00;
-         Registers.PPUMASK.Value = 0x00;
+   public void Reset()
+   {
+      _registers.PPUCTRL.Value = 0x00;
+      _registers.PPUMASK.Value = 0x00;
 
-         Registers.PPUSTATUS.Value = 0b10100000;
-         Registers.OAMADDR.Value = 0x00;
-         Registers.PPUSCROLL.Value = 0x00;
-         Registers.PPUADDR.Value = 0x00;
-         Registers.PPUDATA.Value = 0x00;
-      }
+      _registers.PPUSCROLL.Value = 0x00;
+      _registers.PPUDATA.Value = 0x00;
+   }
 
-      public void Reset()
-      {
-         Registers.PPUCTRL.Value = 0x00;
-         Registers.PPUMASK.Value = 0x00;
-
-         Registers.PPUSCROLL.Value = 0x00;
-         Registers.PPUDATA.Value = 0x00;
-      }
-
-      public void LoadROM(ROM rom)
-      {
-         Memory.SetBlock(rom.GetCHRROMBank(0), 0, 0x0000, 0x2000);
-      }
+   public void LoadROM(ROM rom)
+   {
+      _memory.SetBlock(rom.GetCHRROMBank(0), 0, 0x0000, 0x2000);
    }
 }

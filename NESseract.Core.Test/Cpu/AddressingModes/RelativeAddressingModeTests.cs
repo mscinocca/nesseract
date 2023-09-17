@@ -1,29 +1,28 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NESseract.Core.Cpu.AddressingModes;
 
-namespace NESseract.Core.Test.Cpu.AddressingModes
+namespace NESseract.Core.Test.Cpu.AddressingModes;
+
+[TestClass]
+public class RelativeAddressingModeTests : BaseAddressingModeTests<RelativeAddressingMode>
 {
-   [TestClass]
-   public class RelativeAddressingModeTests : BaseAddressingModeTests<RelativeAddressingMode>
+   [TestMethod]
+   public void GetValueTest()
    {
-      [TestMethod]
-      public void GetValueTest()
-      {
-         cpuRegisters.PC = 0x35;
+      cpuRegisters.PC = 0x35;
 
-         var @value = addressingMode.GetAddress(cpuMemory, cpuRegisters, 0x32, 0x40, out _);
+      var @value = addressingMode.GetAddress(cpuMemory, cpuRegisters, 0x32, 0x40, out _);
 
-         Assert.AreEqual(0x67, value);
-      }
+      Assert.AreEqual(0x67, value);
+   }
 
-      [TestMethod]
-      public void GetSyntaxTest()
-      {
-         cpuRegisters.PC = 0x4000;
+   [TestMethod]
+   public void GetSyntaxTest()
+   {
+      cpuRegisters.PC = 0x4000;
 
-         var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
+      var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
 
-         Assert.AreEqual("$4032", syntax);
-      }
+      Assert.AreEqual("$4032", syntax);
    }
 }

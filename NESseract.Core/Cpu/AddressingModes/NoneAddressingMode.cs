@@ -1,39 +1,38 @@
-﻿namespace NESseract.Core.Cpu.AddressingModes
+﻿namespace NESseract.Core.Cpu.AddressingModes;
+
+public class NoneAddressingMode : IAddressingMode
 {
-   public class NoneAddressingMode : IAddressingMode
+   public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
    {
-      public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
-      {
-         pageBoundaryCrossed = false;
+      pageBoundaryCrossed = false;
 
-         return 0;
-      }
+      return 0;
+   }
 
-      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
-      {
-         pageBoundaryCrossed = false;
+   public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+   {
+      pageBoundaryCrossed = false;
 
-         return 0;
-      }
+      return 0;
+   }
 
-      public byte GetValue(CPUMemory memory, CPURegisters registers, ushort address)
-      {
-         return 0;
-      }
+   public byte GetValue(CPUMemory memory, CPURegisters registers, ushort address)
+   {
+      return 0;
+   }
 
-      public void SetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, byte value, out bool pageBoundaryCrossed)
-      {
-         pageBoundaryCrossed = false;
-      }
+   public void SetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, byte value, out bool pageBoundaryCrossed)
+   {
+      pageBoundaryCrossed = false;
+   }
 
-      public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
-      {
+   public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
+   {
 
-      }
+   }
 
-      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
-      {
-         return string.Empty;
-      }
+   public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+   {
+      return string.Empty;
    }
 }

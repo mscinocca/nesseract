@@ -1,36 +1,35 @@
 ﻿using NESseract.Core.Cpu.AddressingModes;
 using NESseract.Core.Cpu.Definitions;
 
-namespace NESseract.Core.Cpu.Operations
+namespace NESseract.Core.Cpu.Operations;
+
+public class NOPOperation : IOperation
 {
-   public class NOPOperation : IOperation
+   public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
    {
-      public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+      var pageBoundaryCrossed = false;
+
+      if (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross)
       {
-         var pageBoundaryCrossed = false;
-
-         if (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross)
-         {
-            addressingMode.GetAddress(memory, registers, operand1, operand2, out pageBoundaryCrossed);
-         }
-
-         return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
+         addressingMode.GetAddress(memory, registers, operand1, operand2, out pageBoundaryCrossed);
       }
 
-      public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
-      {
-         if (opCodeDefinition.AddressingMode == AddressingMode.NON || 
-             opCodeDefinition.AddressingMode == AddressingMode.IMM ||
-             opCodeDefinition.AddressingMode == AddressingMode.IMP)
-         {
-            return string.Empty;
-         }
-         else
-         {
-            var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+      return (byte)(opCodeDefinition.ExecutionCycles + (opCodeDefinition.AddExecutionCycleOnPageBoundaryCross && pageBoundaryCrossed ? 1 : 0));
+   }
 
-            return $"= {operationValue:X02}";
-         }
+   public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+   {
+      if (opCodeDefinition.AddressingMode == AddressingMode.NON || 
+          opCodeDefinition.AddressingMode == AddressingMode.IMM ||
+          opCodeDefinition.AddressingMode == AddressingMode.IMP)
+      {
+         return string.Empty;
+      }
+      else
+      {
+         var operationValue = addressingMode.GetValue(memory, registers, operand1, operand2, out _);
+
+         return $"= {operationValue:X02}";
       }
    }
 }

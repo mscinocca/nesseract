@@ -1,39 +1,38 @@
 ﻿using System;
 
-namespace NESseract.Core.Cpu.AddressingModes
+namespace NESseract.Core.Cpu.AddressingModes;
+
+public class ImmediateAddressingMode : IAddressingMode
 {
-   public class ImmediateAddressingMode : IAddressingMode
+   public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
    {
-      public ushort GetAddress(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
-      {
-         throw new NotImplementedException("GetAddress not valid for this addressing mode");
-      }
+      throw new NotImplementedException("GetAddress not valid for this addressing mode");
+   }
 
-      public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
-      {
-         pageBoundaryCrossed = false;
+   public byte GetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, out bool pageBoundaryCrossed)
+   {
+      pageBoundaryCrossed = false;
 
-         return operand1;
-      }
+      return operand1;
+   }
 
-      public byte GetValue(CPUMemory memory, CPURegisters registers, ushort address)
-      {
-         throw new NotImplementedException("GetValue not valid for this addressing mode");
-      }
+   public byte GetValue(CPUMemory memory, CPURegisters registers, ushort address)
+   {
+      throw new NotImplementedException("GetValue not valid for this addressing mode");
+   }
 
-      public void SetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, byte value, out bool pageBoundaryCrossed)
-      {
-         throw new NotImplementedException("SetValue not valid for this addressing mode");
-      }
+   public void SetValue(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2, byte value, out bool pageBoundaryCrossed)
+   {
+      throw new NotImplementedException("SetValue not valid for this addressing mode");
+   }
 
-      public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
-      {
-         throw new NotImplementedException("SetValue not valid for this addressing mode");
-      }
+   public void SetValue(CPUMemory memory, CPURegisters registers, ushort address, byte value)
+   {
+      throw new NotImplementedException("SetValue not valid for this addressing mode");
+   }
 
-      public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
-      {
-         return $"#${operand1:X02}";
-      }
+   public string GetSyntax(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+   {
+      return $"#${operand1:X02}";
    }
 }

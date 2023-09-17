@@ -1,14 +1,13 @@
-﻿namespace NESseract.Core.Cpu
+﻿namespace NESseract.Core.Cpu;
+
+public enum InterruptType
 {
-   public enum InterruptType
-   {
-      NMI,
-      IRQ,
-      Reset
-   }
+   NMI,
+   IRQ,
+   RESET
+}
 
-   public class CPUInterrupts
-   {
+public class CPUInterrupts
+{
 
-   }
 }

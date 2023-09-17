@@ -1,20 +1,19 @@
 ﻿using NESseract.Core.Cpu.AddressingModes;
 using NESseract.Core.Cpu.Definitions;
 
-namespace NESseract.Core.Cpu.Operations
+namespace NESseract.Core.Cpu.Operations;
+
+public class TXSOperation : IOperation
 {
-   public class TXSOperation : IOperation
+   public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
    {
-      public byte Execute(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
-      {
-         registers.SP = registers.X;
+      registers.SP = registers.X;
 
-         return opCodeDefinition.ExecutionCycles;
-      }
+      return opCodeDefinition.ExecutionCycles;
+   }
 
-      public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
-      {
-         return string.Empty;
-      }
+   public string GetSyntax(OpCodeDefinition opCodeDefinition, IAddressingMode addressingMode, CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
+   {
+      return string.Empty;
    }
 }

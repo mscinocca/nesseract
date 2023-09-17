@@ -1,37 +1,35 @@
-﻿namespace NESseract.Core.Cpu
+﻿using NESseract.Core.Cpu.Definitions;
+
+namespace NESseract.Core.Cpu;
+
+public struct CPUTickState
 {
-   public struct CPUTickState
+   public ushort PC { get; init; }
+   public byte OpCode { get; init; }
+   public byte Operand1 { get; init; }
+   public byte Operand2 { get; init; }
+   public byte InstructionBytes { get; init; }
+   public OpCode Mnemonic { get; init; }
+   public string AddressSyntax { get; init; }
+   public string OperationSyntax { get; init; }
+   public bool IllegalOpCode { get; init; }
+   public byte A { get; init; }
+   public byte X { get; init; }
+   public byte Y { get; init; }
+   public byte P { get; init; }
+   public byte SP { get; init; }
+   public ushort CYC { get; init; }
+
+   private readonly string _mnemonicSyntax;
+
+   public string MnemonicSyntax
    {
-      public ushort PC { get; set; }
-      public byte OpCode { get; set; }
-      public byte Operand1 { get; set; }
-      public byte Operand2 { get; set; }
-      public byte InstructionBytes { get; set; }
-      public OpCode Nemonic { get; set; }
-      public string AddressSyntax { get; set; }
-      public string OperationSyntax { get; set; }
-      public bool IllegalOpCode { get; set; }
-      public byte A { get; set; }
-      public byte X { get; set; }
-      public byte Y { get; set; }
-      public byte P { get; set; }
-      public byte SP { get; set; }
-      public ushort CYC { get; set; }
+      get => string.IsNullOrEmpty(_mnemonicSyntax) ? $"{(IllegalOpCode ? "*" : "")}{Mnemonic} {AddressSyntax + " " + OperationSyntax}".Trim() : _mnemonicSyntax;
+      init => _mnemonicSyntax = value;
+   }
 
-      private string nemonixSyntax;
-
-      public string NemonicSyntax
-      {
-         get { return string.IsNullOrEmpty(nemonixSyntax) ? $"{(IllegalOpCode ? "*" : "")}{Nemonic} {AddressSyntax + " " + OperationSyntax}".Trim() : nemonixSyntax; }
-         set { nemonixSyntax = value; }
-      }
-
-      public string Log
-      {
-         get
-         {
-            return $"{PC:X04}  {OpCode:X02} {(InstructionBytes >= 2 ? Operand1 : @"  "):X02} {(InstructionBytes == 3 ? Operand2 : @"  "):X02}  {NemonicSyntax,-27} A:{A:X02} X:{X:X02} Y:{Y:X02} P:{P:X02} SP:{SP:X02} PPU:{"0",3},{"0",3} CYC:{CYC}";
-         }
-      }
+   public string Log
+   {
+      get => $"{PC:X04}  {OpCode:X02} {(InstructionBytes >= 2 ? Operand1 : @"  "):X02} {(InstructionBytes == 3 ? Operand2 : @"  "):X02}  {MnemonicSyntax,-27} A:{A:X02} X:{X:X02} Y:{Y:X02} P:{P:X02} SP:{SP:X02} PPU:{"0",3},{"0",3} CYC:{CYC}";
    }
 }

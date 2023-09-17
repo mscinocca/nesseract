@@ -1,131 +1,127 @@
 ﻿using NESseract.Core.Rom;
 using System.Collections.Generic;
 
-namespace NESseract.Core.Cpu
+namespace NESseract.Core.Cpu;
+
+public partial class CPU
 {
-   public partial class CPU
+   public byte Accumulator;
+
+   public readonly CPUMemory Memory;
+   private readonly CPURegisters _registers;
+
+   private readonly Dictionary<byte, OpCodeHandler> _opCodeHandlers;
+
+   private ushort _counter;
+
+   public bool LoggingModeEnabled { get; init; }
+
+   public CPUTickState CPUTickState { get; private set; }
+
+   public CPU()
    {
-      public byte Accumulator;
+      Memory = new CPUMemory();
+      _registers = new CPURegisters();
 
-      public readonly CPUMemory Memory;
-      public readonly CPURegisters Registers;
+      _opCodeHandlers = new Dictionary<byte, OpCodeHandler>();
 
-      public readonly Dictionary<byte, OpCodeHandler> OpCodeHandlers;
+      InitializeOpCodeHandlers();
+   }
 
-      private ushort Counter;
+   public void PowerUp()
+   {
+      _registers.PS = 0x20;
+      _registers.I_InterruptDisable = 1;
 
-      public bool LoggingModeEnabled { get; set; }
+      _registers.A = 0x00;
+      _registers.X = 0x00;
+      _registers.Y = 0x00;
 
-      public CPUTickState CPUTickState { get; private set; }
+      _registers.SP = 0xFD;
 
-      public CPU()
+      Memory[0x4017] = 0x00;
+      Memory[0x4015] = 0x00;
+
+      for (ushort i = 0x4000; i <= 0x400F; i++)
       {
-         Memory = new CPUMemory();
-         Registers = new CPURegisters();
-
-         OpCodeHandlers = new Dictionary<byte, OpCodeHandler>();
-
-         InitializeOpCodeHandlers();
+         Memory[i] = 0x00;
       }
 
-      public void PowerUp()
+      for (ushort i = 0x4010; i <= 0x4013; i++)
       {
-         Registers.PS = 0x20;
-         Registers.I_InterruptDisable = 1;
-
-         Registers.A = 0x00;
-         Registers.X = 0x00;
-         Registers.Y = 0x00;
-
-         Registers.SP = 0xFD;
-
-         Memory[0x4017] = 0x00;
-         Memory[0x4015] = 0x00;
-
-         for (ushort i = 0x4000; i <= 0x400F; i++)
-         {
-            Memory[i] = 0x00;
-         }
-
-         for (ushort i = 0x4010; i <= 0x4013; i++)
-         {
-            Memory[i] = 0x00;
-         }
-
-         Counter = 7;
+         Memory[i] = 0x00;
       }
 
-      public void Reset()
-      {
-         Registers.SP -= 0x03;
+      _counter = 7;
+   }
 
-         Registers.I_InterruptDisable = 1;
+   public void Reset()
+   {
+      _registers.SP -= 0x03;
 
-         Memory[0x4015] = 0x00;
-      }
+      _registers.I_InterruptDisable = 1;
+
+      Memory[0x4015] = 0x00;
+   }
       
-      public void LoadROM(ROM rom)
+   public void LoadROM(ROM rom)
+   {
+      Memory.SetBlock(rom.GetPRGROMBank(0), 0, 0x8000, 0x4000);
+
+      Memory.SetBlock(
+         rom.NumberOfPRGROMBanks > 1 ? 
+            rom.GetPRGROMBank(1) : 
+            rom.GetPRGROMBank(0), 
+         0, 0xC000, 0x4000);
+
+      _registers.PC = 0xC000;
+   }
+
+   public void Tick()
+   {
+      var registerPC = _registers.PC;
+
+      var opCode = Memory[_registers.PC++];
+
+      var opCodeHandler = _opCodeHandlers[opCode];
+
+      byte operand1 = 0;
+      byte operand2 = 0;
+
+      if (opCodeHandler.OpCodeDefinition.InstructionBytes >= 2)
       {
-         Memory.SetBlock(rom.GetPRGROMBank(0), 0, 0x8000, 0x4000);
-
-         if (rom.NumberOfPRGROMBanks > 1)
-         {
-            Memory.SetBlock(rom.GetPRGROMBank(1), 0, 0xC000, 0x4000);
-         }
-         else
-         {
-            Memory.SetBlock(rom.GetPRGROMBank(0), 0, 0xC000, 0x4000);
-         }
-
-         Registers.PC = 0xC000;
+         operand1 = Memory[_registers.PC++];
       }
 
-      public void Tick()
+      if (opCodeHandler.OpCodeDefinition.InstructionBytes == 3)
       {
-         var registerPC = Registers.PC;
-
-         var opCode = Memory[Registers.PC++];
-
-         var opCodeHandler = OpCodeHandlers[opCode];
-
-         byte operand1 = 0;
-         byte operand2 = 0;
-
-         if (opCodeHandler.OpCodeDefinition.InstructionBytes >= 2)
-         {
-            operand1 = Memory[Registers.PC++];
-         }
-
-         if (opCodeHandler.OpCodeDefinition.InstructionBytes == 3)
-         {
-            operand2 = Memory[Registers.PC++];
-         }
-
-         if (LoggingModeEnabled)
-         {
-            CPUTickState = new CPUTickState
-            {
-               PC = registerPC,
-               OpCode = opCode,
-               Operand1 = operand1,
-               Operand2 = operand2,
-               InstructionBytes = opCodeHandler.OpCodeDefinition.InstructionBytes,
-               Nemonic = opCodeHandler.OpCodeDefinition.Nemonic,
-               AddressSyntax = opCodeHandler.AddressingMode.GetSyntax(Memory, Registers, operand1, operand2),
-               OperationSyntax = opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, Registers, operand1, operand2),
-               IllegalOpCode = opCodeHandler.OpCodeDefinition.IllegalOpCode,
-               A = Registers.A,
-               X = Registers.X,
-               Y = Registers.Y,
-               P = Registers.PS,
-               SP = Registers.SP,
-               CYC = Counter,
-            };
-         }
-
-         var cycles = opCodeHandler.Execute(Memory, Registers, operand1, operand2);
-
-         Counter += cycles;
+         operand2 = Memory[_registers.PC++];
       }
+
+      if (LoggingModeEnabled)
+      {
+         CPUTickState = new CPUTickState
+         {
+            PC = registerPC,
+            OpCode = opCode,
+            Operand1 = operand1,
+            Operand2 = operand2,
+            InstructionBytes = opCodeHandler.OpCodeDefinition.InstructionBytes,
+            Mnemonic = opCodeHandler.OpCodeDefinition.Mnemonic,
+            AddressSyntax = opCodeHandler.AddressingMode.GetSyntax(Memory, _registers, operand1, operand2),
+            OperationSyntax = opCodeHandler.Operation.GetSyntax(opCodeHandler.OpCodeDefinition, opCodeHandler.AddressingMode, Memory, _registers, operand1, operand2),
+            IllegalOpCode = opCodeHandler.OpCodeDefinition.IllegalOpCode,
+            A = _registers.A,
+            X = _registers.X,
+            Y = _registers.Y,
+            P = _registers.PS,
+            SP = _registers.SP,
+            CYC = _counter,
+         };
+      }
+
+      var cycles = opCodeHandler.Execute(Memory, _registers, operand1, operand2);
+
+      _counter += cycles;
    }
 }

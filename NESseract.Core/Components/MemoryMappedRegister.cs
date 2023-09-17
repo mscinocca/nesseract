@@ -1,37 +1,22 @@
-﻿using NESseract.Core.Components;
+﻿namespace NESseract.Core.Components;
 
-namespace NESseract.Core.Bus
+public class MemoryMappedRegister
 {
-   public class MemoryMappedRegister
+   private readonly MemoryChip _memory;
+
+   public byte Value
    {
-      private readonly MemoryChip memory;
+      set => _memory[Address] = value;
+   }
 
-      private byte value;
+   private ushort Address { get; }
 
-      public byte Value
-      {
-         get
-         {
-            return value;
-         }
+   public MemoryMappedRegister(MemoryChip memory, ushort address)
+   {
+      _memory = memory;
 
-         set
-         {
-            this.value = value;
+      Address = address;
 
-            memory[Address] = value;
-         }
-      }
-
-      public ushort Address { get; private set; }
-
-      public MemoryMappedRegister(MemoryChip memory, ushort address)
-      {
-         this.memory = memory;
-
-         Address = address;
-
-         this.memory.RegisterMap(address, (byte value) => this.value = value);
-      }
+      _memory.RegisterMap(address, value => { Value = value; });
    }
 }

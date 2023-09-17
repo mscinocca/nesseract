@@ -3,244 +3,243 @@ using NESseract.Core.Cpu.Definitions;
 using NESseract.Core.Cpu.Operations;
 using System;
 
-namespace NESseract.Core.Cpu
+namespace NESseract.Core.Cpu;
+
+public partial class CPU
 {
-   public partial class CPU
+   private IOperation _adcOperation;
+   private IOperation _andOperation;
+   private IOperation _aslOperation;
+   private IOperation _bccOperation;
+   private IOperation _bcsOperation;
+   private IOperation _beqOperation;
+   private IOperation _bitOperation;
+   private IOperation _bmiOperation;
+   private IOperation _bneOperation;
+   private IOperation _bplOperation;
+   private IOperation _bvcOperation;
+   private IOperation _bvsOperation;
+   private IOperation _clcOperation;
+   private IOperation _cldOperation;
+   private IOperation _cliOperation;
+   private IOperation _clvOperation;
+   private IOperation _cmpOperation;
+   private IOperation _cpxOperation;
+   private IOperation _cpyOperation;
+   private IOperation _decOperation;
+   private IOperation _dexOperation;
+   private IOperation _deyOperation;
+   private IOperation _eorOperation;
+   private IOperation _incOperation;
+   private IOperation _inxOperation;
+   private IOperation _inyOperation;
+   private IOperation _jmpOperation;
+   private IOperation _jsrOperation;
+   private IOperation _laxOperation;
+   private IOperation _ldaOperation;
+   private IOperation _ldxOperation;
+   private IOperation _ldyOperation;
+   private IOperation _lsrOperation;
+   private IOperation _nopOperation;
+   private IOperation _oraOperation;
+   private IOperation _phaOperation;
+   private IOperation _phpOperation;
+   private IOperation _plaOperation;
+   private IOperation _plpOperation;
+   private IOperation _rolOperation;
+   private IOperation _rorOperation;
+   private IOperation _rtiOperation;
+   private IOperation _rtsOperation;
+   private IOperation _sbcOperation;
+   private IOperation _secOperation;
+   private IOperation _sedOperation;
+   private IOperation _seiOperation;
+   private IOperation _staOperation;
+   private IOperation _stxOperation;
+   private IOperation _styOperation;
+   private IOperation _taxOperation;
+   private IOperation _tayOperation;
+   private IOperation _tsxOperation;
+   private IOperation _txaOperation;
+   private IOperation _txsOperation;
+   private IOperation _tyaOperation;
+
+   private IAddressingMode _noneAddressingMode;
+   private IAddressingMode _absoluteAddressingMode;
+   private IAddressingMode _absoluteXAddressingMode;
+   private IAddressingMode _absoluteYAddressingMode;
+   private IAddressingMode _accumulatorAddressingMode;
+   private IAddressingMode _immediateAddressingMode;
+   private IAddressingMode _impliedAddressingMode;
+   private IAddressingMode _indirectAddressingMode;
+   private IAddressingMode _indirectXAddressingMode;
+   private IAddressingMode _indirectYAddressingMode;
+   private IAddressingMode _relativeAddressingMode;
+   private IAddressingMode _zeroPageAddressingMode;
+   private IAddressingMode _zeroPageXAddressingMode;
+   private IAddressingMode _zeroPageYAddressingMode;
+
+   private void InitializeOpCodeHandlers()
    {
-      private IOperation adcOperation;
-      private IOperation andOperation;
-      private IOperation aslOperation;
-      private IOperation bccOperation;
-      private IOperation bcsOperation;
-      private IOperation beqOperation;
-      private IOperation bitOperation;
-      private IOperation bmiOperation;
-      private IOperation bneOperation;
-      private IOperation bplOperation;
-      private IOperation bvcOperation;
-      private IOperation bvsOperation;
-      private IOperation clcOperation;
-      private IOperation cldOperation;
-      private IOperation cliOperation;
-      private IOperation clvOperation;
-      private IOperation cmpOperation;
-      private IOperation cpxOperation;
-      private IOperation cpyOperation;
-      private IOperation decOperation;
-      private IOperation dexOperation;
-      private IOperation deyOperation;
-      private IOperation eorOperation;
-      private IOperation incOperation;
-      private IOperation inxOperation;
-      private IOperation inyOperation;
-      private IOperation jmpOperation;
-      private IOperation jsrOperation;
-      private IOperation laxOperation;
-      private IOperation ldaOperation;
-      private IOperation ldxOperation;
-      private IOperation ldyOperation;
-      private IOperation lsrOperation;
-      private IOperation nopOperation;
-      private IOperation oraOperation;
-      private IOperation phaOperation;
-      private IOperation phpOperation;
-      private IOperation plaOperation;
-      private IOperation plpOperation;
-      private IOperation rolOperation;
-      private IOperation rorOperation;
-      private IOperation rtiOperation;
-      private IOperation rtsOperation;
-      private IOperation sbcOperation;
-      private IOperation secOperation;
-      private IOperation sedOperation;
-      private IOperation seiOperation;
-      private IOperation staOperation;
-      private IOperation stxOperation;
-      private IOperation styOperation;
-      private IOperation taxOperation;
-      private IOperation tayOperation;
-      private IOperation tsxOperation;
-      private IOperation txaOperation;
-      private IOperation txsOperation;
-      private IOperation tyaOperation;
+      _adcOperation = new ADCOperation();
+      _andOperation = new ANDOperation();
+      _aslOperation = new ASLOperation();
+      _bccOperation = new BCCOperation();
+      _bcsOperation = new BCSOperation();
+      _beqOperation = new BEQOperation();
+      _bitOperation = new BITOperation();
+      _bmiOperation = new BMIOperation();
+      _bneOperation = new BNEOperation();
+      _bplOperation = new BPLOperation();
+      _bvcOperation = new BVCOperation();
+      _bvsOperation = new BVSOperation();
+      _clcOperation = new CLCOperation();
+      _cldOperation = new CLDOperation();
+      _cliOperation = new CLIOperation();
+      _clvOperation = new CLVOperation();
+      _cmpOperation = new CMPOperation();
+      _cpxOperation = new CPXOperation();
+      _cpyOperation = new CPYOperation();
+      _decOperation = new DECOperation();
+      _dexOperation = new DEXOperation();
+      _deyOperation = new DEYOperation();
+      _eorOperation = new EOROperation();
+      _incOperation = new INCOperation();
+      _inxOperation = new INXOperation();
+      _inyOperation = new INYOperation();
+      _jmpOperation = new JMPOperation();
+      _jsrOperation = new JSROperation();
+      _laxOperation = new LAXOperation();
+      _ldaOperation = new LDAOperation();
+      _ldxOperation = new LDXOperation();
+      _ldyOperation = new LDYOperation();
+      _lsrOperation = new LSROperation();
+      _nopOperation = new NOPOperation();
+      _oraOperation = new ORAOperation();
+      _phaOperation = new PHAOperation();
+      _phpOperation = new PHPOperation();
+      _plaOperation = new PLAOperation();
+      _plpOperation = new PLPOperation();
+      _rolOperation = new ROLOperation();
+      _rorOperation = new ROROperation();
+      _rtiOperation = new RTIOperation();
+      _rtsOperation = new RTSOperation();
+      _sbcOperation = new SBCOperation();
+      _secOperation = new SECOperation();
+      _sedOperation = new SEDOperation();
+      _seiOperation = new SEIOperation();
+      _staOperation = new STAOperation();
+      _stxOperation = new STXOperation();
+      _styOperation = new STYOperation();
+      _taxOperation = new TAXOperation();
+      _tayOperation = new TAYOperation();
+      _tsxOperation = new TSXOperation();
+      _txaOperation = new TXAOperation();
+      _txsOperation = new TXSOperation();
+      _tyaOperation = new TYAOperation();
 
-      private IAddressingMode noneAddressingMode;
-      private IAddressingMode absoluteAddressingMode;
-      private IAddressingMode absoluteXAddressingMode;
-      private IAddressingMode absoluteYAddressingMode;
-      private IAddressingMode accumulatorAddressingMode;
-      private IAddressingMode immediateAddressingMode;
-      private IAddressingMode impliedAddressingMode;
-      private IAddressingMode indirectAddressingMode;
-      private IAddressingMode indirectXAddressingMode;
-      private IAddressingMode indirectYAddressingMode;
-      private IAddressingMode relativeAddressingMode;
-      private IAddressingMode zeroPageAddressingMode;
-      private IAddressingMode zeroPageXAddressingMode;
-      private IAddressingMode zeroPageYAddressingMode;
+      _noneAddressingMode = new NoneAddressingMode();
+      _absoluteAddressingMode = new AbsoluteAddressingMode();
+      _absoluteXAddressingMode = new AbsoluteXAddressingMode();
+      _absoluteYAddressingMode = new AbsoluteYAddressingMode();
+      _accumulatorAddressingMode = new AccumulatorAddressingMode();
+      _immediateAddressingMode = new ImmediateAddressingMode();
+      _impliedAddressingMode = new ImpliedAddressingMode();
+      _indirectAddressingMode = new IndirectAddressingMode();
+      _indirectXAddressingMode = new IndirectXAddressingMode();
+      _indirectYAddressingMode = new IndirectYAddressingMode();
+      _relativeAddressingMode = new RelativeAddressingMode();
+      _zeroPageAddressingMode = new ZeroPageAddressingMode();
+      _zeroPageXAddressingMode = new ZeroPageXAddressingMode();
+      _zeroPageYAddressingMode = new ZeroPageYAddressingMode();
 
-      private void InitializeOpCodeHandlers()
+      OpCodeDefinitions.OpCodeList.ForEach(x =>
       {
-         adcOperation = new ADCOperation();
-         andOperation = new ANDOperation();
-         aslOperation = new ASLOperation();
-         bccOperation = new BCCOperation();
-         bcsOperation = new BCSOperation();
-         beqOperation = new BEQOperation();
-         bitOperation = new BITOperation();
-         bmiOperation = new BMIOperation();
-         bneOperation = new BNEOperation();
-         bplOperation = new BPLOperation();
-         bvcOperation = new BVCOperation();
-         bvsOperation = new BVSOperation();
-         clcOperation = new CLCOperation();
-         cldOperation = new CLDOperation();
-         cliOperation = new CLIOperation();
-         clvOperation = new CLVOperation();
-         cmpOperation = new CMPOperation();
-         cpxOperation = new CPXOperation();
-         cpyOperation = new CPYOperation();
-         decOperation = new DECOperation();
-         dexOperation = new DEXOperation();
-         deyOperation = new DEYOperation();
-         eorOperation = new EOROperation();
-         incOperation = new INCOperation();
-         inxOperation = new INXOperation();
-         inyOperation = new INYOperation();
-         jmpOperation = new JMPOperation();
-         jsrOperation = new JSROperation();
-         laxOperation = new LAXOperation();
-         ldaOperation = new LDAOperation();
-         ldxOperation = new LDXOperation();
-         ldyOperation = new LDYOperation();
-         lsrOperation = new LSROperation();
-         nopOperation = new NOPOperation();
-         oraOperation = new ORAOperation();
-         phaOperation = new PHAOperation();
-         phpOperation = new PHPOperation();
-         plaOperation = new PLAOperation();
-         plpOperation = new PLPOperation();
-         rolOperation = new ROLOperation();
-         rorOperation = new ROROperation();
-         rtiOperation = new RTIOperation();
-         rtsOperation = new RTSOperation();
-         sbcOperation = new SBCOperation();
-         secOperation = new SECOperation();
-         sedOperation = new SEDOperation();
-         seiOperation = new SEIOperation();
-         staOperation = new STAOperation();
-         stxOperation = new STXOperation();
-         styOperation = new STYOperation();
-         taxOperation = new TAXOperation();
-         tayOperation = new TAYOperation();
-         tsxOperation = new TSXOperation();
-         txaOperation = new TXAOperation();
-         txsOperation = new TXSOperation();
-         tyaOperation = new TYAOperation();
-
-         noneAddressingMode = new NoneAddressingMode();
-         absoluteAddressingMode = new AbsoluteAddressingMode();
-         absoluteXAddressingMode = new AbsoluteXAddressingMode();
-         absoluteYAddressingMode = new AbsoluteYAddressingMode();
-         accumulatorAddressingMode = new AccumulatorAddressingMode();
-         immediateAddressingMode = new ImmediateAddressingMode();
-         impliedAddressingMode = new ImpliedAddressingMode();
-         indirectAddressingMode = new IndirectAddressingMode();
-         indirectXAddressingMode = new IndirectXAddressingMode();
-         indirectYAddressingMode = new IndirectYAddressingMode();
-         relativeAddressingMode = new RelativeAddressingMode();
-         zeroPageAddressingMode = new ZeroPageAddressingMode();
-         zeroPageXAddressingMode = new ZeroPageXAddressingMode();
-         zeroPageYAddressingMode = new ZeroPageYAddressingMode();
-
-         OpCodeDefinitions.OpCodeList.ForEach(x =>
+         _opCodeHandlers.Add(x.OpCode, new OpCodeHandler
          {
-            OpCodeHandlers.Add(x.OpCode, new OpCodeHandler
+            OpCodeDefinition = x,
+            Operation = x.Mnemonic switch
             {
-               OpCodeDefinition = x,
-               Operation = x.Nemonic switch
-               {
-                  OpCode.ADC => adcOperation,
-                  OpCode.AND => andOperation,
-                  OpCode.ASL => aslOperation,
-                  OpCode.BCC => bccOperation,
-                  OpCode.BCS => bcsOperation,
-                  OpCode.BEQ => beqOperation,
-                  OpCode.BIT => bitOperation,
-                  OpCode.BMI => bmiOperation,
-                  OpCode.BNE => bneOperation,
-                  OpCode.BPL => bplOperation,
-                  //OpCode.BRK => throw new NotImplementedException(),
-                  OpCode.BVC => bvcOperation,
-                  OpCode.BVS => bvsOperation,
-                  OpCode.CLC => clcOperation,
-                  OpCode.CLD => cldOperation,
-                  OpCode.CLI => cliOperation,
-                  OpCode.CLV => clvOperation,
-                  OpCode.CMP => cmpOperation,
-                  OpCode.CPX => cpxOperation,
-                  OpCode.CPY => cpyOperation,
-                  OpCode.DEC => decOperation,
-                  OpCode.DEX => dexOperation,
-                  OpCode.DEY => deyOperation,
-                  OpCode.EOR => eorOperation,
-                  OpCode.INC => incOperation,
-                  OpCode.INX => inxOperation,
-                  OpCode.INY => inyOperation,
-                  OpCode.JMP => jmpOperation,
-                  OpCode.JSR => jsrOperation,
-                  OpCode.LDA => ldaOperation,
-                  OpCode.LDX => ldxOperation,
-                  OpCode.LDY => ldyOperation,
-                  OpCode.LSR => lsrOperation,
-                  OpCode.NOP => nopOperation,
-                  OpCode.ORA => oraOperation,
-                  OpCode.PHA => phaOperation,
-                  OpCode.PHP => phpOperation,
-                  OpCode.PLA => plaOperation,
-                  OpCode.PLP => plpOperation,
-                  OpCode.ROL => rolOperation,
-                  OpCode.ROR => rorOperation,
-                  OpCode.RTI => rtiOperation,
-                  OpCode.RTS => rtsOperation,
-                  OpCode.SBC => sbcOperation,
-                  OpCode.SEC => secOperation,
-                  OpCode.SED => sedOperation,
-                  OpCode.SEI => seiOperation,
-                  OpCode.STA => staOperation,
-                  OpCode.STX => stxOperation,
-                  OpCode.STY => styOperation,
-                  OpCode.TAX => taxOperation,
-                  OpCode.TAY => tayOperation,
-                  OpCode.TSX => tsxOperation,
-                  OpCode.TXA => txaOperation,
-                  OpCode.TXS => txsOperation,
-                  OpCode.TYA => tyaOperation,
+               OpCode.ADC => _adcOperation,
+               OpCode.AND => _andOperation,
+               OpCode.ASL => _aslOperation,
+               OpCode.BCC => _bccOperation,
+               OpCode.BCS => _bcsOperation,
+               OpCode.BEQ => _beqOperation,
+               OpCode.BIT => _bitOperation,
+               OpCode.BMI => _bmiOperation,
+               OpCode.BNE => _bneOperation,
+               OpCode.BPL => _bplOperation,
+               //OpCode.BRK => throw new NotImplementedException(),
+               OpCode.BVC => _bvcOperation,
+               OpCode.BVS => _bvsOperation,
+               OpCode.CLC => _clcOperation,
+               OpCode.CLD => _cldOperation,
+               OpCode.CLI => _cliOperation,
+               OpCode.CLV => _clvOperation,
+               OpCode.CMP => _cmpOperation,
+               OpCode.CPX => _cpxOperation,
+               OpCode.CPY => _cpyOperation,
+               OpCode.DEC => _decOperation,
+               OpCode.DEX => _dexOperation,
+               OpCode.DEY => _deyOperation,
+               OpCode.EOR => _eorOperation,
+               OpCode.INC => _incOperation,
+               OpCode.INX => _inxOperation,
+               OpCode.INY => _inyOperation,
+               OpCode.JMP => _jmpOperation,
+               OpCode.JSR => _jsrOperation,
+               OpCode.LDA => _ldaOperation,
+               OpCode.LDX => _ldxOperation,
+               OpCode.LDY => _ldyOperation,
+               OpCode.LSR => _lsrOperation,
+               OpCode.NOP => _nopOperation,
+               OpCode.ORA => _oraOperation,
+               OpCode.PHA => _phaOperation,
+               OpCode.PHP => _phpOperation,
+               OpCode.PLA => _plaOperation,
+               OpCode.PLP => _plpOperation,
+               OpCode.ROL => _rolOperation,
+               OpCode.ROR => _rorOperation,
+               OpCode.RTI => _rtiOperation,
+               OpCode.RTS => _rtsOperation,
+               OpCode.SBC => _sbcOperation,
+               OpCode.SEC => _secOperation,
+               OpCode.SED => _sedOperation,
+               OpCode.SEI => _seiOperation,
+               OpCode.STA => _staOperation,
+               OpCode.STX => _stxOperation,
+               OpCode.STY => _styOperation,
+               OpCode.TAX => _taxOperation,
+               OpCode.TAY => _tayOperation,
+               OpCode.TSX => _tsxOperation,
+               OpCode.TXA => _txaOperation,
+               OpCode.TXS => _txsOperation,
+               OpCode.TYA => _tyaOperation,
                   
-                  OpCode.LAX => laxOperation,
+               OpCode.LAX => _laxOperation,
 
-                  _ => nopOperation,
-               },
-               AddressingMode = x.AddressingMode switch
-               {
-                  AddressingMode.NON => noneAddressingMode,
-                  AddressingMode.ZP0 => zeroPageAddressingMode,
-                  AddressingMode.ZPX => zeroPageXAddressingMode,
-                  AddressingMode.ZPY => zeroPageYAddressingMode,
-                  AddressingMode.ABS => absoluteAddressingMode,
-                  AddressingMode.ABX => absoluteXAddressingMode,
-                  AddressingMode.ABY => absoluteYAddressingMode,
-                  AddressingMode.IND => indirectAddressingMode,
-                  AddressingMode.IDX => indirectXAddressingMode,
-                  AddressingMode.IDY => indirectYAddressingMode,
-                  AddressingMode.IMP => impliedAddressingMode,
-                  AddressingMode.ACC => accumulatorAddressingMode,
-                  AddressingMode.IMM => immediateAddressingMode,
-                  AddressingMode.REL => relativeAddressingMode,
-                  _ => throw new NotImplementedException(),
-               }
-            });
+               _ => _nopOperation,
+            },
+            AddressingMode = x.AddressingMode switch
+            {
+               AddressingMode.NON => _noneAddressingMode,
+               AddressingMode.ZP0 => _zeroPageAddressingMode,
+               AddressingMode.ZPX => _zeroPageXAddressingMode,
+               AddressingMode.ZPY => _zeroPageYAddressingMode,
+               AddressingMode.ABS => _absoluteAddressingMode,
+               AddressingMode.ABX => _absoluteXAddressingMode,
+               AddressingMode.ABY => _absoluteYAddressingMode,
+               AddressingMode.IND => _indirectAddressingMode,
+               AddressingMode.IDX => _indirectXAddressingMode,
+               AddressingMode.IDY => _indirectYAddressingMode,
+               AddressingMode.IMP => _impliedAddressingMode,
+               AddressingMode.ACC => _accumulatorAddressingMode,
+               AddressingMode.IMM => _immediateAddressingMode,
+               AddressingMode.REL => _relativeAddressingMode,
+               _ => throw new NotImplementedException(),
+            }
          });
-      }
+      });
    }
 }

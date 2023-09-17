@@ -2,39 +2,38 @@
 using NESseract.Core.Ppu;
 using NESseract.Core.Rom;
 
-namespace NESseract.Core
+namespace NESseract.Core;
+
+public class NESSystem
 {
-   public class NESSystem
+   private readonly CPU _cpu;
+   private readonly PPU _ppu;
+
+   private ROM _loadedROM;
+
+   public NESSystem()
    {
-      public readonly CPU CPU;
-      public readonly PPU PPU;
+      _cpu = new CPU();
+      _ppu = new PPU(_cpu.Memory);
+   }
 
-      public ROM LoadedROM;
+   public void PowerUp()
+   {
+      _cpu.PowerUp();
+      _ppu.PowerUp();
+   }
 
-      public NESSystem()
-      {
-         CPU = new CPU();
-         PPU = new PPU(CPU.Memory);
-      }
+   public void Reset()
+   {
+      _cpu.Reset();
+      _ppu.Reset();
+   }
 
-      public void PowerUp()
-      {
-         CPU.PowerUp();
-         PPU.PowerUp();
-      }
+   public void LoadROM(byte[] data)
+   {
+      _loadedROM = new ROM(data);
 
-      public void Reset()
-      {
-         CPU.Reset();
-         PPU.Reset();
-      }
-
-      public void LoadROM(byte[] data)
-      {
-         LoadedROM = new ROM(data);
-
-         CPU.LoadROM(LoadedROM);
-         PPU.LoadROM(LoadedROM);
-      }
+      _cpu.LoadROM(_loadedROM);
+      _ppu.LoadROM(_loadedROM);
    }
 }

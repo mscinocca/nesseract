@@ -1,27 +1,26 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NESseract.Core.Cpu.AddressingModes;
 
-namespace NESseract.Core.Test.Cpu.AddressingModes
+namespace NESseract.Core.Test.Cpu.AddressingModes;
+
+[TestClass]
+public class ZeroPageAddressingModeTests : BaseAddressingModeTests<ZeroPageAddressingMode>
 {
-   [TestClass]
-   public class ZeroPageAddressingModeTests : BaseAddressingModeTests<ZeroPageAddressingMode>
+   [TestMethod]
+   public void GetValueTest()
    {
-      [TestMethod]
-      public void GetValueTest()
-      {
-         cpuMemory[0x32] = 0x35;
+      cpuMemory[0x32] = 0x35;
 
-         var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x32, 0x40, out _);
+      var @value = addressingMode.GetValue(cpuMemory, cpuRegisters, 0x32, 0x40, out _);
 
-         Assert.AreEqual(0x35, value);
-      }
+      Assert.AreEqual(0x35, value);
+   }
 
-      [TestMethod]
-      public void GetSyntaxTest()
-      {
-         var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
+   [TestMethod]
+   public void GetSyntaxTest()
+   {
+      var syntax = addressingMode.GetSyntax(cpuMemory, cpuRegisters, 0x32, 0x40);
 
-         Assert.AreEqual("$32", syntax);
-      }
+      Assert.AreEqual("$32", syntax);
    }
 }

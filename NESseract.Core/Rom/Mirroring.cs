@@ -1,9 +1,8 @@
-﻿namespace NESseract.Core.Rom
+﻿namespace NESseract.Core.Rom;
+
+public enum Mirroring
 {
-   public enum Mirroring
-   {
-      Vertical = 0,
-      Horizontal = 1,
-      FourScreen = 2,
-   }
+   VERTICAL = 0,
+   HORIZONTAL = 1,
+   FOUR_SCREEN = 2,
 }
