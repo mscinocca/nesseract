@@ -26,7 +26,9 @@ jobs:
       with:
         name: build
         path: NESseract.Core/bin/Debug/net6.0
+        
   package:
+    needs: [ build ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
