@@ -9,9 +9,7 @@ on:
   
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -28,3 +26,14 @@ jobs:
       with:
         name: build
         path: NESseract.Core/bin/Debug/net6.0
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: Build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-final
+          path: Build
