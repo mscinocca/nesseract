@@ -35,8 +35,12 @@ jobs:
       - uses: actions/cache/restore@v3
         id: cache
         with:
-          path: Build
+          path: NESseract.Core/bin/Debug/net6.0
           key: build-abc
+      - name: Copy cache
+        run: |
+          mkdir Build
+          cp NESseract.Core/bin/Debug/net6.0/* Build
       - uses: actions/upload-artifact@v3
         with:
           name: build-final
