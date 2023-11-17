@@ -27,4 +27,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: build
-        path: NESseract.Core/bin/Release
+        path: NESseract.Core/bin/Debug/net6.0
