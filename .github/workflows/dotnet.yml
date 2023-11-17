@@ -26,7 +26,7 @@ jobs:
       id: cache
       with:
         path: NESseract.Core/bin/Debug/net6.0
-        key: build-abc
+        key: build-${{ github.run_id }}
         
   package:
     needs: [ build ]
@@ -36,7 +36,7 @@ jobs:
         id: cache
         with:
           path: NESseract.Core/bin/Debug/net6.0
-          key: build-abc
+          key: build-${{ github.run_id }}
       - name: Copy cache
         run: |
           mkdir Build
