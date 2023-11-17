@@ -22,19 +22,21 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - uses: actions/upload-artifact@v3
+    - uses: actions/cache/save@v3
+      id: cache
       with:
-        name: build
         path: NESseract.Core/bin/Debug/net6.0
+        key: build-abc
         
   package:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/cache/restore@v3
+        id: cache
         with:
-          name: build
           path: Build
+          key: build-abc
       - uses: actions/upload-artifact@v3
         with:
           name: build-final
