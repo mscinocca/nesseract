@@ -52,15 +52,9 @@ public class ROM
       Mapper = (byte)(MapperTypeU | MapperTypeL);
    }
 
-   private Memory<byte> PRGROM
-   {
-      get => _memorySpan.Slice(16 + (TrainerPresent == 1 ? 512 : 0), 0x4000 * NumberOfPRGROMBanks);
-   }
+   private Memory<byte> PRGROM => _memorySpan.Slice(16 + (TrainerPresent == 1 ? 512 : 0), 0x4000 * NumberOfPRGROMBanks);
 
-   private Memory<byte> CHRROM
-   {
-      get => _memorySpan[(16 + (TrainerPresent == 1 ? 512 : 0) + 0x4000 * NumberOfPRGROMBanks)..];
-   }
+   private Memory<byte> CHRROM => _memorySpan[(16 + (TrainerPresent == 1 ? 512 : 0) + 0x4000 * NumberOfPRGROMBanks)..];
 
    public Memory<byte> GetPRGROMBank(int index)
    {

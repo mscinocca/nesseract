@@ -3,20 +3,12 @@ using NESseract.Core.Rom;
 
 namespace NESseract.Core.Ppu;
 
-public class PPU
+public class PPU(CPUMemory cpuMemory)
 {
-   public readonly CPUMemory CPUMemory;
+   public readonly CPUMemory CPUMemory = cpuMemory;
 
-   private readonly PPURegisters _registers;
-   private readonly PPUMemory _memory;
-
-   public PPU(CPUMemory cpuMemory)
-   {
-      CPUMemory = cpuMemory;
-
-      _registers = new PPURegisters(cpuMemory);
-      _memory = new PPUMemory();
-   }
+   private readonly PPURegisters _registers = new(cpuMemory);
+   private readonly PPUMemory _memory = new();
 
    public void PowerUp()
    {

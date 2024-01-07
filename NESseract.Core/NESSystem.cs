@@ -9,7 +9,7 @@ public class NESSystem
    private readonly CPU _cpu;
    private readonly PPU _ppu;
 
-   private ROM _loadedROM;
+   private ROM? _loadedROM;
 
    public NESSystem()
    {

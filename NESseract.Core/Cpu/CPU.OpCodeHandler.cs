@@ -7,158 +7,85 @@ namespace NESseract.Core.Cpu;
 
 public partial class CPU
 {
-   private IOperation _adcOperation;
-   private IOperation _andOperation;
-   private IOperation _aslOperation;
-   private IOperation _bccOperation;
-   private IOperation _bcsOperation;
-   private IOperation _beqOperation;
-   private IOperation _bitOperation;
-   private IOperation _bmiOperation;
-   private IOperation _bneOperation;
-   private IOperation _bplOperation;
-   private IOperation _bvcOperation;
-   private IOperation _bvsOperation;
-   private IOperation _clcOperation;
-   private IOperation _cldOperation;
-   private IOperation _cliOperation;
-   private IOperation _clvOperation;
-   private IOperation _cmpOperation;
-   private IOperation _cpxOperation;
-   private IOperation _cpyOperation;
-   private IOperation _decOperation;
-   private IOperation _dexOperation;
-   private IOperation _deyOperation;
-   private IOperation _eorOperation;
-   private IOperation _incOperation;
-   private IOperation _inxOperation;
-   private IOperation _inyOperation;
-   private IOperation _jmpOperation;
-   private IOperation _jsrOperation;
-   private IOperation _laxOperation;
-   private IOperation _ldaOperation;
-   private IOperation _ldxOperation;
-   private IOperation _ldyOperation;
-   private IOperation _lsrOperation;
-   private IOperation _nopOperation;
-   private IOperation _oraOperation;
-   private IOperation _phaOperation;
-   private IOperation _phpOperation;
-   private IOperation _plaOperation;
-   private IOperation _plpOperation;
-   private IOperation _rolOperation;
-   private IOperation _rorOperation;
-   private IOperation _rtiOperation;
-   private IOperation _rtsOperation;
-   private IOperation _sbcOperation;
-   private IOperation _secOperation;
-   private IOperation _sedOperation;
-   private IOperation _seiOperation;
-   private IOperation _staOperation;
-   private IOperation _stxOperation;
-   private IOperation _styOperation;
-   private IOperation _taxOperation;
-   private IOperation _tayOperation;
-   private IOperation _tsxOperation;
-   private IOperation _txaOperation;
-   private IOperation _txsOperation;
-   private IOperation _tyaOperation;
+   private readonly ADCOperation _adcOperation = new();
+   private readonly ANDOperation _andOperation = new();
+   private readonly ASLOperation _aslOperation = new();
+   private readonly BCCOperation _bccOperation = new();
+   private readonly BCSOperation _bcsOperation = new();
+   private readonly BEQOperation _beqOperation = new();
+   private readonly BITOperation _bitOperation = new();
+   private readonly BMIOperation _bmiOperation = new();
+   private readonly BNEOperation _bneOperation = new();
+   private readonly BPLOperation _bplOperation = new();
+   private readonly BVCOperation _bvcOperation = new();
+   private readonly BVSOperation _bvsOperation = new();
+   private readonly CLCOperation _clcOperation = new();
+   private readonly CLDOperation _cldOperation = new();
+   private readonly CLIOperation _cliOperation = new();
+   private readonly CLVOperation _clvOperation = new();
+   private readonly CMPOperation _cmpOperation = new();
+   private readonly CPXOperation _cpxOperation = new();
+   private readonly CPYOperation _cpyOperation = new();
+   private readonly DECOperation _decOperation = new();
+   private readonly DEXOperation _dexOperation = new();
+   private readonly DEYOperation _deyOperation = new();
+   private readonly EOROperation _eorOperation = new();
+   private readonly INCOperation _incOperation = new();
+   private readonly INXOperation _inxOperation = new();
+   private readonly INYOperation _inyOperation = new();
+   private readonly JMPOperation _jmpOperation = new();
+   private readonly JSROperation _jsrOperation = new();
+   private readonly LAXOperation _laxOperation = new();
+   private readonly LDAOperation _ldaOperation = new();
+   private readonly LDXOperation _ldxOperation = new();
+   private readonly LDYOperation _ldyOperation = new();
+   private readonly LSROperation _lsrOperation = new();
+   private readonly NOPOperation _nopOperation = new();
+   private readonly ORAOperation _oraOperation = new();
+   private readonly PHAOperation _phaOperation = new();
+   private readonly PHPOperation _phpOperation = new();
+   private readonly PLAOperation _plaOperation = new();
+   private readonly PLPOperation _plpOperation = new();
+   private readonly ROLOperation _rolOperation = new();
+   private readonly ROROperation _rorOperation = new();
+   private readonly RTIOperation _rtiOperation = new();
+   private readonly TXSOperation _txsOperation = new();
+   private readonly RTSOperation _rtsOperation = new();
+   private readonly SBCOperation _sbcOperation = new();
+   private readonly SECOperation _secOperation = new();
+   private readonly SEDOperation _sedOperation = new();
+   private readonly SEIOperation _seiOperation = new();
+   private readonly STAOperation _staOperation = new();
+   private readonly STXOperation _stxOperation = new();
+   private readonly STYOperation _styOperation = new();
+   private readonly TAXOperation _taxOperation = new();
+   private readonly TAYOperation _tayOperation = new();
+   private readonly TSXOperation _tsxOperation = new();
+   private readonly TXAOperation _txaOperation = new();
+   private readonly TYAOperation _tyaOperation = new();
 
-   private IAddressingMode _noneAddressingMode;
-   private IAddressingMode _absoluteAddressingMode;
-   private IAddressingMode _absoluteXAddressingMode;
-   private IAddressingMode _absoluteYAddressingMode;
-   private IAddressingMode _accumulatorAddressingMode;
-   private IAddressingMode _immediateAddressingMode;
-   private IAddressingMode _impliedAddressingMode;
-   private IAddressingMode _indirectAddressingMode;
-   private IAddressingMode _indirectXAddressingMode;
-   private IAddressingMode _indirectYAddressingMode;
-   private IAddressingMode _relativeAddressingMode;
-   private IAddressingMode _zeroPageAddressingMode;
-   private IAddressingMode _zeroPageXAddressingMode;
-   private IAddressingMode _zeroPageYAddressingMode;
+   private readonly NoneAddressingMode _noneAddressingMode = new();
+   private readonly AbsoluteAddressingMode _absoluteAddressingMode = new();
+   private readonly AbsoluteXAddressingMode _absoluteXAddressingMode = new();
+   private readonly AbsoluteYAddressingMode _absoluteYAddressingMode = new();
+   private readonly AccumulatorAddressingMode _accumulatorAddressingMode = new();
+   private readonly ImmediateAddressingMode _immediateAddressingMode = new();
+   private readonly ImpliedAddressingMode _impliedAddressingMode = new();
+   private readonly IndirectAddressingMode _indirectAddressingMode = new();
+   private readonly IndirectXAddressingMode _indirectXAddressingMode = new();
+   private readonly IndirectYAddressingMode _indirectYAddressingMode = new();
+   private readonly RelativeAddressingMode _relativeAddressingMode = new();
+   private readonly ZeroPageAddressingMode _zeroPageAddressingMode = new();
+   private readonly ZeroPageXAddressingMode _zeroPageXAddressingMode = new();
+   private readonly ZeroPageYAddressingMode _zeroPageYAddressingMode = new();
 
    private void InitializeOpCodeHandlers()
    {
-      _adcOperation = new ADCOperation();
-      _andOperation = new ANDOperation();
-      _aslOperation = new ASLOperation();
-      _bccOperation = new BCCOperation();
-      _bcsOperation = new BCSOperation();
-      _beqOperation = new BEQOperation();
-      _bitOperation = new BITOperation();
-      _bmiOperation = new BMIOperation();
-      _bneOperation = new BNEOperation();
-      _bplOperation = new BPLOperation();
-      _bvcOperation = new BVCOperation();
-      _bvsOperation = new BVSOperation();
-      _clcOperation = new CLCOperation();
-      _cldOperation = new CLDOperation();
-      _cliOperation = new CLIOperation();
-      _clvOperation = new CLVOperation();
-      _cmpOperation = new CMPOperation();
-      _cpxOperation = new CPXOperation();
-      _cpyOperation = new CPYOperation();
-      _decOperation = new DECOperation();
-      _dexOperation = new DEXOperation();
-      _deyOperation = new DEYOperation();
-      _eorOperation = new EOROperation();
-      _incOperation = new INCOperation();
-      _inxOperation = new INXOperation();
-      _inyOperation = new INYOperation();
-      _jmpOperation = new JMPOperation();
-      _jsrOperation = new JSROperation();
-      _laxOperation = new LAXOperation();
-      _ldaOperation = new LDAOperation();
-      _ldxOperation = new LDXOperation();
-      _ldyOperation = new LDYOperation();
-      _lsrOperation = new LSROperation();
-      _nopOperation = new NOPOperation();
-      _oraOperation = new ORAOperation();
-      _phaOperation = new PHAOperation();
-      _phpOperation = new PHPOperation();
-      _plaOperation = new PLAOperation();
-      _plpOperation = new PLPOperation();
-      _rolOperation = new ROLOperation();
-      _rorOperation = new ROROperation();
-      _rtiOperation = new RTIOperation();
-      _rtsOperation = new RTSOperation();
-      _sbcOperation = new SBCOperation();
-      _secOperation = new SECOperation();
-      _sedOperation = new SEDOperation();
-      _seiOperation = new SEIOperation();
-      _staOperation = new STAOperation();
-      _stxOperation = new STXOperation();
-      _styOperation = new STYOperation();
-      _taxOperation = new TAXOperation();
-      _tayOperation = new TAYOperation();
-      _tsxOperation = new TSXOperation();
-      _txaOperation = new TXAOperation();
-      _txsOperation = new TXSOperation();
-      _tyaOperation = new TYAOperation();
-
-      _noneAddressingMode = new NoneAddressingMode();
-      _absoluteAddressingMode = new AbsoluteAddressingMode();
-      _absoluteXAddressingMode = new AbsoluteXAddressingMode();
-      _absoluteYAddressingMode = new AbsoluteYAddressingMode();
-      _accumulatorAddressingMode = new AccumulatorAddressingMode();
-      _immediateAddressingMode = new ImmediateAddressingMode();
-      _impliedAddressingMode = new ImpliedAddressingMode();
-      _indirectAddressingMode = new IndirectAddressingMode();
-      _indirectXAddressingMode = new IndirectXAddressingMode();
-      _indirectYAddressingMode = new IndirectYAddressingMode();
-      _relativeAddressingMode = new RelativeAddressingMode();
-      _zeroPageAddressingMode = new ZeroPageAddressingMode();
-      _zeroPageXAddressingMode = new ZeroPageXAddressingMode();
-      _zeroPageYAddressingMode = new ZeroPageYAddressingMode();
-
       OpCodeDefinitions.OpCodeList.ForEach(x =>
       {
-         _opCodeHandlers.Add(x.OpCode, new OpCodeHandler
-         {
-            OpCodeDefinition = x,
-            Operation = x.Mnemonic switch
+         _opCodeHandlers.Add(x.OpCode, new OpCodeHandler(
+            x,
+            x.Mnemonic switch
             {
                OpCode.ADC => _adcOperation,
                OpCode.AND => _andOperation,
@@ -216,12 +143,12 @@ public partial class CPU
                OpCode.TXA => _txaOperation,
                OpCode.TXS => _txsOperation,
                OpCode.TYA => _tyaOperation,
-                  
+
                OpCode.LAX => _laxOperation,
 
                _ => _nopOperation,
             },
-            AddressingMode = x.AddressingMode switch
+            x.AddressingMode switch
             {
                AddressingMode.NON => _noneAddressingMode,
                AddressingMode.ZP0 => _zeroPageAddressingMode,
@@ -238,8 +165,7 @@ public partial class CPU
                AddressingMode.IMM => _immediateAddressingMode,
                AddressingMode.REL => _relativeAddressingMode,
                _ => throw new NotImplementedException(),
-            }
-         });
+            }));
       });
    }
 }

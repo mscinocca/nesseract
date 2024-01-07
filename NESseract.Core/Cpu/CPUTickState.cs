@@ -28,8 +28,5 @@ public struct CPUTickState
       init => _mnemonicSyntax = value;
    }
 
-   public string Log
-   {
-      get => $"{PC:X04}  {OpCode:X02} {(InstructionBytes >= 2 ? Operand1 : @"  "):X02} {(InstructionBytes == 3 ? Operand2 : @"  "):X02}  {MnemonicSyntax,-27} A:{A:X02} X:{X:X02} Y:{Y:X02} P:{P:X02} SP:{SP:X02} PPU:{"0",3},{"0",3} CYC:{CYC}";
-   }
+   public string Log => $"{PC:X04}  {OpCode:X02} {(InstructionBytes >= 2 ? Operand1 : @"  "):X02} {(InstructionBytes == 3 ? Operand2 : "  "):X02}  {MnemonicSyntax,-27} A:{A:X02} X:{X:X02} Y:{Y:X02} P:{P:X02} SP:{SP:X02} PPU:{"0",3},{"0",3} CYC:{CYC}";
 }

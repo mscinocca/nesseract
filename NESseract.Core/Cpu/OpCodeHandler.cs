@@ -4,13 +4,16 @@ using NESseract.Core.Cpu.Operations;
 
 namespace NESseract.Core.Cpu;
 
-public class OpCodeHandler
+public class OpCodeHandler(
+   OpCodeDefinition opCodeDefinition,
+   IOperation operation,
+   IAddressingMode addressingMode)
 {
-   public OpCodeDefinition OpCodeDefinition { get; init; }
+   public OpCodeDefinition OpCodeDefinition { get; } = opCodeDefinition;
 
-   public IOperation Operation { get; init; }
+   public IOperation Operation { get; } = operation;
 
-   public IAddressingMode AddressingMode { get; init; }
+   public IAddressingMode AddressingMode { get; } = addressingMode;
 
    public byte Execute(CPUMemory memory, CPURegisters registers, byte operand1, byte operand2)
    {
